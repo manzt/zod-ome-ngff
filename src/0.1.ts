@@ -80,7 +80,42 @@ export const PlateSchema = z
   .describe("JSON from OME-NGFF Plate .zattrs");
 
 
-export const StrictImageSchema = z.any();
+export const StrictImageSchema = z
+  .object({
+    multiscales: z
+      .array(
+        z.object({
+          name: z.string(),
+          datasets: z.array(z.object({ path: z.string() })).min(1),
+          version: z.enum(["0.1"]),
+          metadata: z.object({
+            method: z.string().optional(),
+            version: z.string().optional(),
+          }),
+        })
+      )
+      .min(1)
+      .describe("The multiscale datasets for this image"),
+    omero: z
+      .object({
+        channels: z.array(
+          z.object({
+            window: z.object({
+              end: z.number(),
+              max: z.number(),
+              min: z.number(),
+              start: z.number(),
+            }),
+            label: z.string().optional(),
+            family: z.string().optional(),
+            color: z.string(),
+            active: z.boolean().optional(),
+          })
+        ),
+      })
+      .optional(),
+  })
+  .describe("JSON from OME-NGFF .zattrs");
 
 
 export const WellSchema = z

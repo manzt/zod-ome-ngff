@@ -65,7 +65,9 @@ function inject_additional_required(base, strict) {
 // injects the additional required properties into the non-strict schema.
 /** @param {any} schema */
 async function deref_strict(schema) {
-  let root = OmeStrictJSONSchema.parse(await RefParser.dereference(schema));
+  let root = await RefParser.dereference(schema);
+  OmeStrictJSONSchema.parse(root);
+  // @ts-ignore
   let [base, additional_required] = root.allOf;
   inject_additional_required(base, additional_required);
   base["$id"] = root["$id"];
