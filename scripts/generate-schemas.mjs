@@ -1,7 +1,9 @@
+// @ts-check
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import * as url from "node:url";
 
+import { z } from "zod";
 import camelcase from "camelcase";
 import RefParser from "@apidevtools/json-schema-ref-parser";
 import { jsonSchemaToZod } from "json-schema-to-zod";
@@ -10,6 +12,37 @@ let __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 let VERSIONS = ["0.1", "0.2", "0.3", "0.4"];
 
+// A partial schema for the "strict" versions of the NGFF JSON schemas.
+// This will ensure our script fails if the "strict" schemas change.
+let OmeStrictJSONSchema = z.object({
+  $id: z.string(),
+  allOf: z.tuple([
+    z.object({
+      $id: z.string(),
+      $schema: z.string(),
+      properties: z.object({}),
+    }),
+    z.object({
+      properties: z.object({}),
+    }),
+  ]),
+});
+
+let FileEntry = z.object({
+  type: z.literal("file"),
+  download_url: z.string(),
+});
+
+let DirEntry = z.object({
+  type: z.literal("dir"),
+});
+
+let GitHubContents = z.array(z.union([FileEntry, DirEntry]));
+
+/**
+ * @param {Record<string, any>} base
+ * @param {Record<string, any>} strict
+ */
 function inject_additional_required(base, strict) {
   for (let key in strict) {
     if (key === "required") {
@@ -30,14 +63,19 @@ function inject_additional_required(base, strict) {
 //
 // This function takes the "strict" schema and resolves the "allOf" property, then
 // injects the additional required properties into the non-strict schema.
+/** @param {any} schema */
 async function deref_strict(schema) {
-  let root = await RefParser.dereference(schema);
+  let root = OmeStrictJSONSchema.parse(await RefParser.dereference(schema));
   let [base, additional_required] = root.allOf;
   inject_additional_required(base, additional_required);
   base["$id"] = root["$id"];
   return base;
 }
 
+/**
+ * @param {string} endpoint
+ * @param {{ token?: string }} options
+ */
 async function ghfetch(endpoint, { token = "" } = {}) {
   let url = new URL(endpoint, "https://api.github.com");
   let auth = `Basic ${Buffer.from(token, "binary").toString("base64")}`;
@@ -54,13 +92,46 @@ async function ghfetch(endpoint, { token = "" } = {}) {
   return data;
 }
 
-let src = path.join(__dirname, "..", "src");
+async function write_package_exports() {
+  // update package.json
 
-await fs.mkdir(src).catch(() => {});
+  let pkg = JSON.parse(
+    await fs.readFile(path.join(__dirname, "..", "package.json"), {
+      encoding: "utf8",
+    }),
+  );
 
-for (let version of VERSIONS) {
-  let files = await ghfetch(`/repos/ome/ngff/contents/${version}/schemas`)
-    .then((res) => res.filter((f) => f.type === "file"));
+  pkg.exports = {
+    ".": {
+      types: `./dist/${VERSIONS.at(-1)}.d.ts`,
+      import: `./dist/${VERSIONS.at(-1)}.js`,
+    },
+  };
+
+  for (let version of VERSIONS) {
+    pkg.exports[`./${version}`] = {
+      "types": `./dist/${version}.d.ts`,
+      "import": `./dist/${version}.js`,
+    };
+  }
+
+  await fs.writeFile(
+    path.join(__dirname, "..", "package.json"),
+    JSON.stringify(pkg, null, 2),
+  );
+}
+
+/**
+ * @param {string} version The ome-ngff version
+ * @param {string} src The path to the src directory
+ */
+async function write_module(version, src) {
+  let files = GitHubContents.parse(
+    await ghfetch(`/repos/ome/ngff/contents/${version}/schemas`),
+  ).filter(
+    /** @type {(f: any) => f is z.infer<typeof FileEntry>} */ ((f) =>
+      f.type === "file"),
+  );
 
   let schemas = await Promise.all(
     files.map((file) =>
@@ -86,29 +157,11 @@ for (let version of VERSIONS) {
   await fs.writeFile(path.join(src, `${version}.ts`), module);
 }
 
-// update package.json
-
-let pkg = JSON.parse(
-  await fs.readFile(path.join(__dirname, "..", "package.json"), {
-    encoding: "utf8",
-  }),
-);
-
-pkg.exports = {
-  ".": {
-    types: `./dist/${VERSIONS.at(-1)}.d.ts`,
-    import: `./dist/${VERSIONS.at(-1)}.js`,
-  },
-};
-
-for (let version of VERSIONS) {
-  pkg.exports[`./${version}`] = {
-    "types": `./dist/${version}.d.ts`,
-    "import": `./dist/${version}.js`,
-  };
+async function main() {
+  let src = path.join(__dirname, "..", "src");
+  await fs.mkdir(src).catch(() => {});
+  for (let version of VERSIONS) await write_module(src, version);
+  await write_package_exports();
 }
 
-await fs.writeFile(
-  path.join(__dirname, "..", "package.json"),
-  JSON.stringify(pkg, null, 2),
-);
+main();
