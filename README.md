@@ -45,28 +45,28 @@ attrs;
 
 if ("multiscales" in attrs) {
   console.log("Multiscales:", attrs.multiscales);
-  //^? StrictImageSchema
+                            //^? StrictImageSchema
 }
 
 if ("image-label" in attrs) {
   console.log("Label:", attrs["image-label"]);
-  //^? StrictLabelSchema
+                      //^? StrictLabelSchema
 }
 
 if ("well" in attrs) {
   console.log("Well:", attrs.well);
-  //^? StrictWellSchema
+                     //^? StrictWellSchema
 }
 
 if ("plate" in attrs) {
   console.log("Plate:", attrs.plate);
-  //^? StrictPlateSchema
+                      //^? StrictPlateSchema
 }
 ```
 
 # sub-packages
 
-We generate validators for `v0.1`, `v0.2`, `v0.3`, and `v0.4` schemas.
+Validators are exported for `v0.1`, `v0.2`, `v0.3`, and `v0.4` schemas.
 
 ```typescript
 import * as v01 from "ome-ngff-schema-zod/0.1";
@@ -74,7 +74,7 @@ import * as v02 from "ome-ngff-schema-zod/0.2";
 import * as v03 from "ome-ngff-schema-zod/0.3";
 import * as v04 from "ome-ngff-schema-zod/0.4";
 
-import * as schemas from "ome-ngff-schema-zod"; // v0.4
+import * as schemas from "ome-ngff-schema-zod"; // latest
 ```
 
 # development

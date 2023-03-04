@@ -22,7 +22,7 @@ export const ImageSchema = z
               z.object({ path: z.string(), coordinateTransformations: z.any() })
             )
             .min(1),
-          version: z.enum(["0.4"]).optional(),
+          version: z.enum(["0.5-dev"]).optional(),
           axes: z.any(),
           coordinateTransformations: z.any().optional(),
         })
@@ -89,7 +89,7 @@ export const LabelSchema = z
           .describe("The source of this label image")
           .optional(),
         version: z
-          .enum(["0.4"])
+          .enum(["0.5-dev"])
           .describe("The version of the specification")
           .optional(),
       })
@@ -161,7 +161,7 @@ export const PlateSchema = z
           .describe("The acquisitions for this plate")
           .optional(),
         version: z
-          .enum(["0.4"])
+          .enum(["0.5-dev"])
           .describe("The version of the specification")
           .optional(),
         field_count: z
@@ -253,7 +253,7 @@ export const WellSchema = z
           .min(1)
           .describe("The fields of view for this well"),
         version: z
-          .enum(["0.4"])
+          .enum(["0.5-dev"])
           .describe("The version of the specification")
           .optional(),
       })

@@ -10,7 +10,7 @@ import { jsonSchemaToZod } from "json-schema-to-zod";
 
 let __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-let VERSIONS = ["0.1", "0.2", "0.3", "0.4"];
+let VERSIONS = ["0.1", "0.2", "0.3", "0.4", "latest"];
 
 // A partial schema for the "strict" versions of the NGFF JSON schemas.
 // This will ensure our script fails if the "strict" schemas change.
@@ -93,23 +93,16 @@ async function ghfetch(endpoint, { token = "" } = {}) {
 }
 
 async function write_package_exports() {
-  // update package.json
-
   let pkg = JSON.parse(
     await fs.readFile(path.join(__dirname, "..", "package.json"), {
       encoding: "utf8",
     }),
   );
 
-  pkg.exports = {
-    ".": {
-      types: `./dist/${VERSIONS.at(-1)}.d.ts`,
-      import: `./dist/${VERSIONS.at(-1)}.js`,
-    },
-  };
+  pkg.exports = {}
 
   for (let version of VERSIONS) {
-    pkg.exports[`./${version}`] = {
+    pkg.exports[version === "latest" ? "." : `./${version}`] = {
       "types": `./dist/${version}.d.ts`,
       "import": `./dist/${version}.js`,
     };
@@ -123,9 +116,9 @@ async function write_package_exports() {
 
 /**
  * @param {string} version The ome-ngff version
- * @param {string} src The path to the src directory
+ * @param {{ where: string }} opts
  */
-async function write_module(version, src) {
+async function write_module(version, { where }) {
   let files = GitHubContents.parse(
     await ghfetch(`/repos/ome/ngff/contents/${version}/schemas`),
   ).filter(
@@ -154,13 +147,15 @@ async function write_module(version, src) {
       exports.join("\n\n")
     }`;
 
-  await fs.writeFile(path.join(src, `${version}.ts`), module);
+  await fs.writeFile(path.join(where, `${version}.ts`), module);
 }
 
 async function main() {
   let src = path.join(__dirname, "..", "src");
   await fs.mkdir(src).catch(() => {});
-  for (let version of VERSIONS) await write_module(src, version);
+  for (let version of VERSIONS) {
+    await write_module(version, { where: src });
+  }
   await write_package_exports();
 }
 
