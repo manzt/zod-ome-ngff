@@ -1,5 +1,9 @@
 # ome-ngff-schema-zod
 
+[![Node version](https://img.shields.io/npm/v/ome-ngff-schema-zod.svg)](https://www.npmjs.com/package/ome-ngff-schema-zod)
+![GitHub Actions](https://github.com/manzt/ome-ngff-schema-zod/actions/workflows/ci.yml/badge.svg)
+
+
 zod schemas for [ome-ngff](https://github.com/ome/ngff).
 
 > **Warning**: here be dragons...
