@@ -1,5 +1,5 @@
 {
-  "name": "ome-ngff-zod",
+  "name": "ome-ngff-schema-zod",
   "description": "zod schemas for OME-NGFF",
   "version": "0.0.0",
   "type": "module",
