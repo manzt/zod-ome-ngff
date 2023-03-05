@@ -109,8 +109,7 @@ const PlateWells = z
     }),
   )
   .min(1)
-  .describe("The wells of the plate")
-  .optional();
+  .describe("The wells of the plate");
 
 const FieldCount = z
   .number()
@@ -184,9 +183,40 @@ export const OmeSchema = z
 
 const Axis = z.object({
   name: z.string(),
-  type: z.string().optional(),
+  type: z.string().default("space"),
   units: z.string().optional(),
 });
+
+const Axes = z.array(Axis)
+  .min(2)
+  .superRefine((axes, ctx) => {
+    let names = axes.map((ax) => ax.name);
+    if (axes.length !== new Set(names).size) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `No duplicate axes allowed.`,
+      });
+    }
+    if (axes.length > 5) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Too many axes.`,
+      });
+    }
+    let total_space_axes = axes.filter((ax) => ax.type === "space").length;
+    if (total_space_axes <= 1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Missing space axes.",
+      });
+    }
+    if (total_space_axes > 3) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Too many space axes.",
+      });
+    }
+  });
 
 const CoordinateTransformation = z.union([
   z.object({ type: z.enum(["identity"]) }),
@@ -200,6 +230,42 @@ const CoordinateTransformation = z.union([
   }),
 ]);
 
+const CoordinateTransformations = z.array(
+  z.union([
+    z.object({ type: z.enum(["identity"]) }),
+    z.object({
+      type: z.enum(["scale"]),
+      scale: z.array(z.number()).min(2),
+    }),
+    z.object({
+      type: z.enum(["translation"]),
+      translation: z.array(z.number()).min(2),
+    }),
+  ]),
+)
+  .min(1)
+  .superRefine((ts, ctx) => {
+    let scales = ts.filter((t): t is { type: "scale"; scale: number[] } =>
+      t.type === "scale"
+    );
+    let unique_scales = new Set(scales.map((s) => s.scale.join(".")));
+    if (scales.length !== unique_scales.size) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `No duplicate scale transformations allowed.`,
+      });
+    }
+    if (
+      ts.some((t) => t.type === "translation") &&
+      scales.length === 0
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Missing scale for translation.`,
+      });
+    }
+  });
+
 const Multiscales = z
   .array(
     z.object({
@@ -208,24 +274,12 @@ const Multiscales = z
         .array(
           z.object({
             path: z.string(),
-            coordinateTransformations: z.array(
-              z.union([
-                z.object({ type: z.enum(["identity"]) }),
-                z.object({
-                  type: z.enum(["scale"]),
-                  scale: z.array(z.number()).min(2),
-                }),
-                z.object({
-                  type: z.enum(["translation"]),
-                  translation: z.array(z.number()).min(2),
-                }),
-              ]),
-            ),
+            coordinateTransformations: CoordinateTransformations,
           }),
         )
         .min(1),
       version: z.literal("0.4").optional(),
-      axes: z.array(Axis).min(2),
+      axes: Axes,
       coordinateTransformations: z.array(CoordinateTransformation).optional(),
     }),
   )
@@ -295,6 +349,15 @@ export const LabelSchema = z
           )
           .min(1)
           .describe("The colors for this label image")
+          .superRefine((colors, ctx) => {
+            let label_values = colors.map((color) => color["label-value"]);
+            if (colors.length !== new Set(label_values).size) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `No duplicate color_labels allowed.`,
+              });
+            }
+          })
           .optional(),
         properties: z
           .array(
@@ -351,7 +414,16 @@ export const WellSchema = z
             }),
           )
           .min(1)
-          .describe("The fields of view for this well"),
+          .describe("The fields of view for this well")
+          .superRefine((imgs, ctx) => {
+            let paths = imgs.map((img) => img.path);
+            if (imgs.length !== new Set(paths).size) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `No duplicate images allowed.`,
+              });
+            }
+          }),
         version: z
           .literal("0.4")
           .describe("The version of the specification")
