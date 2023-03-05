@@ -1,0 +1,3 @@
+[submodule "ngff"]
+	path = ngff
+	url = https://github.com/ome/ngff

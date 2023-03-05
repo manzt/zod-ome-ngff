@@ -1,9 +1,10 @@
 {
+  "include": ["src/**/*"],
   "compilerOptions": {
     "outDir": "dist",
-    "module": "node16",
+    "module": "esnext",
     "moduleDetection": "force",
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "target": "ES2020", // Node.js 14
     "lib": ["ES2020"],
     "declaration": true,

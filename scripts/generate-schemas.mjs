@@ -2,15 +2,65 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import * as url from "node:url";
+import * as os from "node:os";
 
 import { z } from "zod";
 import camelcase from "camelcase";
 import RefParser from "@apidevtools/json-schema-ref-parser";
-import { jsonSchemaToZod } from "json-schema-to-zod";
+import { jsonSchemaToZodDereffed } from "json-schema-to-zod";
 
 let __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 let VERSIONS = ["0.1", "0.2", "0.3", "0.4", "latest"];
+
+let OVERRIDES = /** @type {const} */ ({
+  axes: {
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        type: { type: "string" },
+        units: { type: "string" },
+      },
+    },
+    required: ["name"],
+  },
+  coordinateTransformations: {
+    type: "array",
+    items: {
+      anyOf: [
+        {
+          type: "object",
+          properties: {
+            type: { type: "string", enum: ["identity"] },
+          },
+          required: ["type"],
+        },
+        {
+          type: "object",
+          properties: {
+            type: { type: "string", enum: ["scale"] },
+            scale: { type: "array", items: { type: "number" }, minItems: 2 },
+          },
+          required: ["type", "scale"],
+        },
+        {
+          type: "object",
+          properties: {
+            type: { type: "string", enum: ["translation"] },
+            translation: {
+              type: "array",
+              items: { type: "number" },
+              minItems: 2,
+            },
+          },
+          required: ["type", "translation"],
+        },
+      ],
+    },
+  },
+});
 
 // A partial schema for the "strict" versions of the NGFF JSON schemas.
 // This will ensure our script fails if the "strict" schemas change.
@@ -18,26 +68,11 @@ let OmeStrictJSONSchema = z.object({
   $id: z.string(),
   allOf: z.tuple([
     z.object({
-      $id: z.string(),
-      $schema: z.string(),
-      properties: z.object({}),
+      $ref: z.string(),
     }),
-    z.object({
-      properties: z.object({}),
-    }),
+    z.any(),
   ]),
 });
-
-let FileEntry = z.object({
-  type: z.literal("file"),
-  download_url: z.string(),
-});
-
-let DirEntry = z.object({
-  type: z.literal("dir"),
-});
-
-let GitHubContents = z.array(z.union([FileEntry, DirEntry]));
 
 /**
  * @param {Record<string, any>} base
@@ -49,6 +84,19 @@ function inject_additional_required(base, strict) {
       base[key] = (base[key] ?? []).concat(strict[key]);
     } else if (key in base) {
       inject_additional_required(base[key], strict[key]);
+    }
+  }
+}
+
+/**
+ * @param {Record<string, any>} base
+ */
+function inject_overrides(base) {
+  if (!("$defs" in base)) return;
+  for (let key in base.$defs) {
+    if (key in OVERRIDES) {
+      console.log("\treplacing:", key);
+      base.$defs[key] = OVERRIDES[key];
     }
   }
 }
@@ -65,33 +113,11 @@ function inject_additional_required(base, strict) {
 // injects the additional required properties into the non-strict schema.
 /** @param {any} schema */
 async function deref_strict(schema) {
-  let root = await RefParser.dereference(schema);
-  OmeStrictJSONSchema.parse(root);
-  // @ts-ignore
-  let [base, additional_required] = root.allOf;
-  inject_additional_required(base, additional_required);
-  base["$id"] = root["$id"];
+  let root = OmeStrictJSONSchema.parse(schema);
+  let base = await fetch(root.allOf[0].$ref).then((res) => res.json());
+  inject_additional_required(base, root.allOf[1]);
+  base.$id = root.$id;
   return base;
-}
-
-/**
- * @param {string} endpoint
- * @param {{ token?: string }} options
- */
-async function ghfetch(endpoint, { token = "" } = {}) {
-  let url = new URL(endpoint, "https://api.github.com");
-  let auth = `Basic ${Buffer.from(token, "binary").toString("base64")}`;
-  let res = await fetch(url, {
-    method: "GET",
-    headers: { Authorization: auth },
-  });
-  let data = await res.json();
-  if (!res.ok) {
-    throw new Error(
-      `GitHub request for ${url.pathname} failed. Reason: ${res.statusText} Message: ${data.message}`,
-    );
-  }
-  return data;
 }
 
 async function write_package_exports() {
@@ -101,7 +127,7 @@ async function write_package_exports() {
     }),
   );
 
-  pkg.exports = {}
+  pkg.exports = {};
 
   for (let version of VERSIONS) {
     pkg.exports[version === "latest" ? "." : `./${version}`] = {
@@ -112,7 +138,7 @@ async function write_package_exports() {
 
   await fs.writeFile(
     path.join(__dirname, "..", "package.json"),
-    JSON.stringify(pkg, null, 2),
+    JSON.stringify(pkg, null, 2) + os.EOL,
   );
 }
 
@@ -121,28 +147,30 @@ async function write_package_exports() {
  * @param {{ where: string }} opts
  */
 async function write_module(version, { where }) {
-  let files = GitHubContents.parse(
-    await ghfetch(`/repos/ome/ngff/contents/${version}/schemas`),
-  ).filter(
-    /** @type {(f: any) => f is z.infer<typeof FileEntry>} */ ((f) =>
-      f.type === "file"),
-  );
+  let sdir = path.resolve(__dirname, "..", "ngff", version, "schemas");
+  let entries = await fs.opendir(sdir);
 
-  let schemas = await Promise.all(
-    files.map((file) =>
-      fetch(file.download_url)
-        .then((r) => r.json())
-        .then((schema) =>
-          schema.$id.includes("strict_") ? deref_strict(schema) : schema
-        )
-    ),
-  );
+  let schemas = [];
+  for await (let dir of entries) {
+    if (!dir.isFile()) continue;
+    let contents = await fs.readFile(path.resolve(sdir, dir.name), {
+      encoding: "utf8",
+    });
+    let schema = JSON.parse(contents);
+    if (schema.$id.includes("strict_")) {
+      schema = await deref_strict(schema);
+    }
+    inject_overrides(schema);
+    schemas.push(schema);
+  }
 
-  let exports = schemas.map((schema) => {
+  let promises = schemas.map(async (schema) => {
     let cased = camelcase(schema.$id.split("/").pop());
     let name = cased.charAt(0).toUpperCase() + cased.slice(1);
-    return `export ${jsonSchemaToZod(schema, name, false)}`;
+    return `export ${await jsonSchemaToZodDereffed(schema, name, false)}`;
   });
+
+  let exports = await Promise.all(promises);
 
   let module =
     `// This file is generated by scripts/generate-schemas.mjs\nimport { z } from "zod";\n\n${

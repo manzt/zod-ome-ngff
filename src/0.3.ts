@@ -36,6 +36,41 @@ export const ImageSchema = z
   .describe("JSON from OME-NGFF .zattrs");
 
 
+export const StrictImageSchema = z
+  .object({
+    multiscales: z
+      .array(
+        z.object({
+          name: z.string(),
+          datasets: z.array(z.object({ path: z.string() })).min(1),
+          version: z.enum(["0.3"]),
+          axes: z.array(z.string().regex(new RegExp("^[xyzct]$"))).min(2),
+        })
+      )
+      .min(1)
+      .describe("The multiscale datasets for this image"),
+    omero: z
+      .object({
+        channels: z.array(
+          z.object({
+            window: z.object({
+              end: z.number(),
+              max: z.number(),
+              min: z.number(),
+              start: z.number(),
+            }),
+            label: z.string().optional(),
+            family: z.string().optional(),
+            color: z.string(),
+            active: z.boolean().optional(),
+          })
+        ),
+      })
+      .optional(),
+  })
+  .describe("JSON from OME-NGFF .zattrs");
+
+
 export const PlateSchema = z
   .object({
     plate: z.object({
@@ -88,41 +123,6 @@ export const PlateSchema = z
     }),
   })
   .describe("JSON from OME-NGFF Plate .zattrs");
-
-
-export const StrictImageSchema = z
-  .object({
-    multiscales: z
-      .array(
-        z.object({
-          name: z.string(),
-          datasets: z.array(z.object({ path: z.string() })).min(1),
-          version: z.enum(["0.3"]),
-          axes: z.array(z.string().regex(new RegExp("^[xyzct]$"))).min(2),
-        })
-      )
-      .min(1)
-      .describe("The multiscale datasets for this image"),
-    omero: z
-      .object({
-        channels: z.array(
-          z.object({
-            window: z.object({
-              end: z.number(),
-              max: z.number(),
-              min: z.number(),
-              start: z.number(),
-            }),
-            label: z.string().optional(),
-            family: z.string().optional(),
-            color: z.string(),
-            active: z.boolean().optional(),
-          })
-        ),
-      })
-      .optional(),
-  })
-  .describe("JSON from OME-NGFF .zattrs");
 
 
 export const WellSchema = z
