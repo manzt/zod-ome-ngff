@@ -8,7 +8,7 @@ export const ImageSchema = z
         z.object({
           name: z.string().optional(),
           datasets: z.array(z.object({ path: z.string() })).min(1),
-          version: z.enum(["0.2"]).optional(),
+          version: z.literal("0.2").optional(),
         })
       )
       .min(1)
@@ -38,7 +38,7 @@ export const ImageSchema = z
 export const PlateSchema = z
   .object({
     plate: z.object({
-      version: z.enum(["0.2"]),
+      version: z.literal("0.2"),
       name: z.string().optional(),
       columns: z
         .array(z.object({ name: z.string() }))
@@ -110,7 +110,7 @@ export const WellSchema = z
           .min(1)
           .describe("The fields of view for this well"),
         version: z
-          .enum(["0.2"])
+          .literal("0.2")
           .describe("The version of the specification")
           .optional(),
       })
