@@ -122,12 +122,47 @@ export const ImageSchema = z
           name: z.string().optional(),
           datasets: z
             .array(
-              z.object({ path: z.string(), coordinateTransformations: z.any() })
+              z.object({
+                path: z.string(),
+                coordinateTransformations: z.array(
+                  z.union([
+                    z.object({ type: z.enum(["identity"]) }),
+                    z.object({
+                      type: z.enum(["scale"]),
+                      scale: z.array(z.number()).min(2),
+                    }),
+                    z.object({
+                      type: z.enum(["translation"]),
+                      translation: z.array(z.number()).min(2),
+                    }),
+                  ])
+                ),
+              })
             )
             .min(1),
           version: z.enum(["0.4"]).optional(),
-          axes: z.any(),
-          coordinateTransformations: z.any().optional(),
+          axes: z.array(
+            z.object({
+              name: z.string().optional(),
+              type: z.string().optional(),
+              units: z.string().optional(),
+            })
+          ),
+          coordinateTransformations: z
+            .array(
+              z.union([
+                z.object({ type: z.enum(["identity"]) }),
+                z.object({
+                  type: z.enum(["scale"]),
+                  scale: z.array(z.number()).min(2),
+                }),
+                z.object({
+                  type: z.enum(["translation"]),
+                  translation: z.array(z.number()).min(2),
+                }),
+              ])
+            )
+            .optional(),
         })
       )
       .min(1)
