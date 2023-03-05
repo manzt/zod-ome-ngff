@@ -114,22 +114,24 @@ const PlateWells = z
   .describe("The wells of the plate")
   .optional();
 
+const FieldCount = z
+  .number()
+  .int()
+  .gt(0)
+  .describe("The maximum number of fields per view across all wells")
+  .optional();
+
 export const PlateSchema = z
   .object({
     plate: z
       .object({
-        aquisitions: Aquisitions.optional(),
+        name: z.string().describe("The name of the plate").optional(),
         version: z
           .literal("0.5-dev")
           .describe("The version of the specification")
           .optional(),
-        field_count: z
-          .number()
-          .int()
-          .gt(0)
-          .describe("The maximum number of fields per view across all wells")
-          .optional(),
-        name: z.string().describe("The name of the plate").optional(),
+        aquisitions: Aquisitions.optional(),
+        field_count: FieldCount,
         columns: Columns,
         rows: Rows,
         wells: PlateWells,
@@ -137,27 +139,29 @@ export const PlateSchema = z
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-type Plate = z.infer<typeof PlateSchema>["plate"];
-
 type StrictAquisition = PickRequired<
   z.infer<typeof Aquisitions.element>,
   "name" | "maximumfieldcount"
 >;
-type StrictPlateSchema = {
-  plate: PickRequired<Omit<Plate, "aquisitions">, "version" | "name"> & {
-    aquisitions?: StrictAquisition[];
-  };
-};
 
-export const StrictPlateSchema = PlateSchema.refine(
-  (val): val is StrictPlateSchema => {
-    return "version" in val.plate && "name" in val.plate && (
-      (val.plate.aquisitions ?? []).every((aq) => {
-        return "name" in aq && "maximumfieldcount" in aq;
-      })
-    );
-  },
-);
+export const StrictPlateSchema = z
+  .object({
+    plate: z
+      .object({
+        name: z.string().describe("The name of the plate"),
+        version: z.literal("0.5-dev").describe(
+          "The version of the specification",
+        ),
+        acquisitions: Aquisitions.refine((val): val is StrictAquisition[] => {
+          return val.every((a) => "name" in a && "maximumfieldcount" in a);
+        }).optional(),
+        field_count: FieldCount,
+        columns: Columns,
+        rows: Rows,
+        wells: PlateWells,
+      }),
+  })
+  .describe("JSON from OME-NGFF .zattrs");
 
 // Bf2Raw
 
@@ -335,6 +339,15 @@ export const WellSchema = z
             }),
           )
           .min(1)
+          .superRefine((imgs, ctx) => {
+            let paths = imgs.map((img) => img.path);
+            if (imgs.length !== new Set(paths).size) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `No duplicate images allowed.`,
+              });
+            }
+          })
           .describe("The fields of view for this well"),
         version: z
           .literal("0.5-dev")
