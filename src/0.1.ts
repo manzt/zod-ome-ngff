@@ -120,6 +120,6 @@ export const WellSchema = z
           .literal("0.1")
           .describe("The version of the specification")
           .optional(),
-      })
+      }),
   })
   .describe("JSON from OME-NGFF .zattrs");

@@ -164,7 +164,7 @@ export const Bf2RawSchema = z
   .object({
     "bioformats2raw.layout": z
       .literal(3)
-      .describe("The top-level identifier metadata added by bioformats2raw")
+      .describe("The top-level identifier metadata added by bioformats2raw"),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
@@ -176,7 +176,7 @@ export const OmeSchema = z
       .array(z.string())
       .describe(
         "An array of the same length and the same order as the images defined in the OME-XML",
-      )
+      ),
   })
   .describe("JSON from OME-NGFF OME/.zattrs linked to an OME-XML file");
 
@@ -263,7 +263,7 @@ type StrictImageSchema = {
     "version" | "name" // | "metadata" | "type"
   >[];
   omero: z.infer<typeof ImageSchema>["omero"];
-}
+};
 
 export const StrictImageSchema = ImageSchema.refine(
   (data): data is StrictImageSchema => {
