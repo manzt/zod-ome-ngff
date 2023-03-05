@@ -28,4 +28,4 @@ jobs:
         with:
           node-version: '18.x'
       - run: pnpm install
-      - run: "echo TODO"
+      - run: pnpm coverage

@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "generate-schemas": "node ./scripts/generate-schemas.mjs",
-    "test": "vitest run",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "check": "tsc && publint",
     "build": "tsc && publint"
   },
@@ -41,6 +42,7 @@
     "@changesets/cli": "^2.26.0",
     "@svitejs/changesets-changelog-github-compact": "^1.1.0",
     "@types/node": "^18.14.6",
+    "@vitest/coverage-c8": "^0.29.2",
     "camelcase": "^7.0.1",
     "glob": "^9.2.1",
     "json-schema-to-zod": "^0.6.3",
