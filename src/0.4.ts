@@ -258,115 +258,44 @@ export const StrictImageSchema = z
             .array(
               z.object({
                 path: z.string(),
-                coordinateTransformations: z
-                  .array(
-                    z.any().superRefine((x, ctx) => {
-                      const schemas = [
-                        z.object({
-                          type: z.enum(["scale"]),
-                          scale: z.array(z.number()).min(2),
-                        }),
-                        z.object({
-                          type: z.enum(["translation"]),
-                          translation: z.array(z.number()).min(2),
-                        }),
-                      ];
-                      const errors = schemas.reduce(
-                        (errors: z.ZodError[], schema) =>
-                          ((result) =>
-                            "error" in result
-                              ? [...errors, result.error]
-                              : errors)(schema.safeParse(x)),
-                        []
-                      );
-                      if (schemas.length - errors.length !== 1) {
-                        ctx.addIssue({
-                          path: ctx.path,
-                          code: "invalid_union",
-                          unionErrors: errors,
-                          message: "Invalid input: Should pass single schema",
-                        });
-                      }
-                    })
-                  )
-                  .min(1),
+                coordinateTransformations: z.array(
+                  z.union([
+                    z.object({ type: z.enum(["identity"]) }),
+                    z.object({
+                      type: z.enum(["scale"]),
+                      scale: z.array(z.number()).min(2),
+                    }),
+                    z.object({
+                      type: z.enum(["translation"]),
+                      translation: z.array(z.number()).min(2),
+                    }),
+                  ])
+                ),
               })
             )
             .min(1),
           version: z.enum(["0.4"]),
-          axes: z
-            .array(
-              z.any().superRefine((x, ctx) => {
-                const schemas = [
-                  z.object({
-                    name: z.string(),
-                    type: z.enum(["channel", "time", "space"]),
-                  }),
-                  z.object({
-                    name: z.string(),
-                    type: z
-                      .any()
-                      .refine(
-                        (value) =>
-                          !z.enum(["space", "time", "channel"]).safeParse(value)
-                            .success,
-                        "Invalid input: Should NOT be valid against schema"
-                      )
-                      .optional(),
-                  }),
-                ];
-                const errors = schemas.reduce(
-                  (errors: z.ZodError[], schema) =>
-                    ((result) =>
-                      "error" in result ? [...errors, result.error] : errors)(
-                      schema.safeParse(x)
-                    ),
-                  []
-                );
-                if (schemas.length - errors.length !== 1) {
-                  ctx.addIssue({
-                    path: ctx.path,
-                    code: "invalid_union",
-                    unionErrors: errors,
-                    message: "Invalid input: Should pass single schema",
-                  });
-                }
-              })
-            )
-            .min(2)
-            .max(5),
+          axes: z.array(
+            z.object({
+              name: z.string().optional(),
+              type: z.string().optional(),
+              units: z.string().optional(),
+            })
+          ),
           coordinateTransformations: z
             .array(
-              z.any().superRefine((x, ctx) => {
-                const schemas = [
-                  z.object({
-                    type: z.enum(["scale"]),
-                    scale: z.array(z.number()).min(2),
-                  }),
-                  z.object({
-                    type: z.enum(["translation"]),
-                    translation: z.array(z.number()).min(2),
-                  }),
-                ];
-                const errors = schemas.reduce(
-                  (errors: z.ZodError[], schema) =>
-                    ((result) =>
-                      "error" in result ? [...errors, result.error] : errors)(
-                      schema.safeParse(x)
-                    ),
-                  []
-                );
-                if (schemas.length - errors.length !== 1) {
-                  ctx.addIssue({
-                    path: ctx.path,
-                    code: "invalid_union",
-                    unionErrors: errors,
-                    message: "Invalid input: Should pass single schema",
-                  });
-                }
-              })
+              z.union([
+                z.object({ type: z.enum(["identity"]) }),
+                z.object({
+                  type: z.enum(["scale"]),
+                  scale: z.array(z.number()).min(2),
+                }),
+                z.object({
+                  type: z.enum(["translation"]),
+                  translation: z.array(z.number()).min(2),
+                }),
+              ])
             )
-            .min(1)
             .optional(),
         })
       )

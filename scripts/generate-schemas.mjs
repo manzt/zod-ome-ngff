@@ -68,13 +68,9 @@ let OmeStrictJSONSchema = z.object({
   $id: z.string(),
   allOf: z.tuple([
     z.object({
-      $id: z.string(),
-      $schema: z.string(),
-      properties: z.object({}),
+      $ref: z.string(),
     }),
-    z.object({
-      properties: z.object({}),
-    }),
+    z.any(),
   ]),
 });
 
@@ -94,11 +90,9 @@ function inject_additional_required(base, strict) {
 
 /**
  * @param {Record<string, any>} base
- * @param {string} version
  */
-function inject_overrides(base, version) {
+function inject_overrides(base) {
   if (!("$defs" in base)) return;
-  console.log(`injecting overrides for: ${base.$id} (${version})`);
   for (let key in base.$defs) {
     if (key in OVERRIDES) {
       console.log("\treplacing:", key);
@@ -119,12 +113,10 @@ function inject_overrides(base, version) {
 // injects the additional required properties into the non-strict schema.
 /** @param {any} schema */
 async function deref_strict(schema) {
-  let root = await RefParser.dereference(schema);
-  OmeStrictJSONSchema.parse(root);
-  // @ts-ignore
-  let [base, additional_required] = root.allOf;
-  inject_additional_required(base, additional_required);
-  base["$id"] = root["$id"];
+  let root = OmeStrictJSONSchema.parse(schema);
+  let base = await fetch(root.allOf[0].$ref).then((res) => res.json());
+  inject_additional_required(base, root.allOf[1]);
+  base.$id = root.$id;
   return base;
 }
 
@@ -168,7 +160,7 @@ async function write_module(version, { where }) {
     if (schema.$id.includes("strict_")) {
       schema = await deref_strict(schema);
     }
-    inject_overrides(schema, version);
+    inject_overrides(schema);
     schemas.push(schema);
   }
 
