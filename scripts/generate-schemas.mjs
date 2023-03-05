@@ -70,7 +70,7 @@ async function write_package_exports() {
     }),
   );
 
-  pkg.exports = {}
+  pkg.exports = {};
 
   for (let version of VERSIONS) {
     pkg.exports[version === "latest" ? "." : `./${version}`] = {
@@ -98,7 +98,7 @@ async function write_module(version, { where }) {
     if (!dir.isFile()) continue;
     let contents = await fs.readFile(path.resolve(sdir, dir.name), {
       encoding: "utf8",
-    })
+    });
     let schema = JSON.parse(contents);
     if (schema.$id.includes("strict_")) {
       schema = await deref_strict(schema);
