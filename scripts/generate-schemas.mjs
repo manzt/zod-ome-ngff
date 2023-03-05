@@ -28,17 +28,6 @@ let OmeStrictJSONSchema = z.object({
   ]),
 });
 
-let FileEntry = z.object({
-  type: z.literal("file"),
-  download_url: z.string(),
-});
-
-let DirEntry = z.object({
-  type: z.literal("dir"),
-});
-
-let GitHubContents = z.array(z.union([FileEntry, DirEntry]));
-
 /**
  * @param {Record<string, any>} base
  * @param {Record<string, any>} strict
@@ -74,26 +63,6 @@ async function deref_strict(schema) {
   return base;
 }
 
-/**
- * @param {string} endpoint
- * @param {{ token?: string }} options
- */
-async function ghfetch(endpoint, { token = "" } = {}) {
-  let url = new URL(endpoint, "https://api.github.com");
-  let auth = `Basic ${Buffer.from(token, "binary").toString("base64")}`;
-  let res = await fetch(url, {
-    method: "GET",
-    headers: { Authorization: auth },
-  });
-  let data = await res.json();
-  if (!res.ok) {
-    throw new Error(
-      `GitHub request for ${url.pathname} failed. Reason: ${res.statusText} Message: ${data.message}`,
-    );
-  }
-  return data;
-}
-
 async function write_package_exports() {
   let pkg = JSON.parse(
     await fs.readFile(path.join(__dirname, "..", "package.json"), {
@@ -121,22 +90,21 @@ async function write_package_exports() {
  * @param {{ where: string }} opts
  */
 async function write_module(version, { where }) {
-  let files = GitHubContents.parse(
-    await ghfetch(`/repos/ome/ngff/contents/${version}/schemas`),
-  ).filter(
-    /** @type {(f: any) => f is z.infer<typeof FileEntry>} */ ((f) =>
-      f.type === "file"),
-  );
+  let sdir = path.resolve(__dirname, "..", "ngff", version, "schemas");
+  let entries = await fs.opendir(sdir);
 
-  let schemas = await Promise.all(
-    files.map((file) =>
-      fetch(file.download_url)
-        .then((r) => r.json())
-        .then((schema) =>
-          schema.$id.includes("strict_") ? deref_strict(schema) : schema
-        )
-    ),
-  );
+  let schemas = [];
+  for await (let dir of entries) {
+    if (!dir.isFile()) continue;
+    let contents = await fs.readFile(path.resolve(sdir, dir.name), {
+      encoding: "utf8",
+    })
+    let schema = JSON.parse(contents);
+    if (schema.$id.includes("strict_")) {
+      schema = await deref_strict(schema);
+    }
+    schemas.push(schema);
+  }
 
   let exports = schemas.map((schema) => {
     let cased = camelcase(schema.$id.split("/").pop());
