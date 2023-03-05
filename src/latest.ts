@@ -13,14 +13,14 @@ export const StrictPlateSchema = z
                 .int()
                 .gte(0)
                 .describe(
-                  "A unique identifier within the context of the plate"
+                  "A unique identifier within the context of the plate",
                 ),
               maximumfieldcount: z
                 .number()
                 .int()
                 .gt(0)
                 .describe(
-                  "The maximum number of fields of view for the acquisition"
+                  "The maximum number of fields of view for the acquisition",
                 ),
               name: z.string().describe("The name of the acquisition"),
               description: z
@@ -32,7 +32,7 @@ export const StrictPlateSchema = z
                 .int()
                 .gte(0)
                 .describe(
-                  "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch"
+                  "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
                 )
                 .optional(),
               endtime: z
@@ -40,10 +40,10 @@ export const StrictPlateSchema = z
                 .int()
                 .gte(0)
                 .describe(
-                  "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch"
+                  "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
                 )
                 .optional(),
-            })
+            }),
           )
           .describe("The acquisitions for this plate")
           .optional(),
@@ -62,7 +62,7 @@ export const StrictPlateSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The column name"),
-            })
+            }),
           )
           .min(1)
           .describe("The columns of the plate"),
@@ -73,7 +73,7 @@ export const StrictPlateSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The row name"),
-            })
+            }),
           )
           .min(1)
           .describe("The rows of the plate"),
@@ -94,7 +94,7 @@ export const StrictPlateSchema = z
                 .int()
                 .gte(0)
                 .describe("The index of the well in the columns list"),
-            })
+            }),
           )
           .min(1)
           .describe("The wells of the plate"),
@@ -102,7 +102,6 @@ export const StrictPlateSchema = z
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const Bf2RawSchema = z
   .object({
@@ -112,7 +111,6 @@ export const Bf2RawSchema = z
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const ImageSchema = z
   .object({
@@ -135,9 +133,9 @@ export const ImageSchema = z
                       type: z.enum(["translation"]),
                       translation: z.array(z.number()).min(2),
                     }),
-                  ])
+                  ]),
                 ),
-              })
+              }),
             )
             .min(1),
           version: z.enum(["0.5-dev"]).optional(),
@@ -146,7 +144,7 @@ export const ImageSchema = z
               name: z.string().optional(),
               type: z.string().optional(),
               units: z.string().optional(),
-            })
+            }),
           ),
           coordinateTransformations: z
             .array(
@@ -160,10 +158,10 @@ export const ImageSchema = z
                   type: z.enum(["translation"]),
                   translation: z.array(z.number()).min(2),
                 }),
-              ])
+              ]),
             )
             .optional(),
-        })
+        }),
       )
       .min(1)
       .describe("The multiscale datasets for this image"),
@@ -181,25 +179,23 @@ export const ImageSchema = z
             family: z.string().optional(),
             color: z.string(),
             active: z.boolean().optional(),
-          })
+          }),
         ),
       })
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-
 export const OmeSchema = z
   .object({
     series: z
       .array(z.string())
       .describe(
-        "An array of the same length and the same order as the images defined in the OME-XML"
+        "An array of the same length and the same order as the images defined in the OME-XML",
       )
       .optional(),
   })
   .describe("JSON from OME-NGFF OME/.zattrs linked to an OME-XML file");
-
 
 export const LabelSchema = z
   .object({
@@ -214,10 +210,10 @@ export const LabelSchema = z
                 .min(4)
                 .max(4)
                 .describe(
-                  "The RGBA color stored as an array of four integers between 0 and 255"
+                  "The RGBA color stored as an array of four integers between 0 and 255",
                 )
                 .optional(),
-            })
+            }),
           )
           .min(1)
           .describe("The colors for this label image")
@@ -229,7 +225,7 @@ export const LabelSchema = z
                 .number()
                 .int()
                 .describe("The pixel value for this label"),
-            })
+            }),
           )
           .min(1)
           .describe("The properties for this label image")
@@ -246,7 +242,6 @@ export const LabelSchema = z
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const StrictImageSchema = z
   .object({
@@ -269,9 +264,9 @@ export const StrictImageSchema = z
                       type: z.enum(["translation"]),
                       translation: z.array(z.number()).min(2),
                     }),
-                  ])
+                  ]),
                 ),
-              })
+              }),
             )
             .min(1),
           version: z.enum(["0.5-dev"]),
@@ -280,7 +275,7 @@ export const StrictImageSchema = z
               name: z.string().optional(),
               type: z.string().optional(),
               units: z.string().optional(),
-            })
+            }),
           ),
           coordinateTransformations: z
             .array(
@@ -294,10 +289,10 @@ export const StrictImageSchema = z
                   type: z.enum(["translation"]),
                   translation: z.array(z.number()).min(2),
                 }),
-              ])
+              ]),
             )
             .optional(),
-        })
+        }),
       )
       .min(1)
       .describe("The multiscale datasets for this image"),
@@ -315,13 +310,12 @@ export const StrictImageSchema = z
             family: z.string().optional(),
             color: z.string(),
             active: z.boolean().optional(),
-          })
+          }),
         ),
       })
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const PlateSchema = z
   .object({
@@ -335,14 +329,14 @@ export const PlateSchema = z
                 .int()
                 .gte(0)
                 .describe(
-                  "A unique identifier within the context of the plate"
+                  "A unique identifier within the context of the plate",
                 ),
               maximumfieldcount: z
                 .number()
                 .int()
                 .gt(0)
                 .describe(
-                  "The maximum number of fields of view for the acquisition"
+                  "The maximum number of fields of view for the acquisition",
                 )
                 .optional(),
               name: z
@@ -358,7 +352,7 @@ export const PlateSchema = z
                 .int()
                 .gte(0)
                 .describe(
-                  "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch"
+                  "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
                 )
                 .optional(),
               endtime: z
@@ -366,10 +360,10 @@ export const PlateSchema = z
                 .int()
                 .gte(0)
                 .describe(
-                  "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch"
+                  "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
                 )
                 .optional(),
-            })
+            }),
           )
           .describe("The acquisitions for this plate")
           .optional(),
@@ -391,7 +385,7 @@ export const PlateSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The column name"),
-            })
+            }),
           )
           .min(1)
           .describe("The columns of the plate"),
@@ -402,7 +396,7 @@ export const PlateSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The row name"),
-            })
+            }),
           )
           .min(1)
           .describe("The rows of the plate"),
@@ -423,7 +417,7 @@ export const PlateSchema = z
                 .int()
                 .gte(0)
                 .describe("The index of the well in the columns list"),
-            })
+            }),
           )
           .min(1)
           .describe("The wells of the plate"),
@@ -431,7 +425,6 @@ export const PlateSchema = z
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const WellSchema = z
   .object({
@@ -449,7 +442,7 @@ export const WellSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The path for this field of view subgroup"),
-            })
+            }),
           )
           .min(1)
           .describe("The fields of view for this well"),
@@ -461,7 +454,6 @@ export const WellSchema = z
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const StrictLabelSchema = z
   .object({
@@ -476,10 +468,10 @@ export const StrictLabelSchema = z
                 .min(4)
                 .max(4)
                 .describe(
-                  "The RGBA color stored as an array of four integers between 0 and 255"
+                  "The RGBA color stored as an array of four integers between 0 and 255",
                 )
                 .optional(),
-            })
+            }),
           )
           .min(1)
           .describe("The colors for this label image"),
@@ -490,7 +482,7 @@ export const StrictLabelSchema = z
                 .number()
                 .int()
                 .describe("The pixel value for this label"),
-            })
+            }),
           )
           .min(1)
           .describe("The properties for this label image")
@@ -506,7 +498,6 @@ export const StrictLabelSchema = z
       .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
-
 
 export const StrictWellSchema = z
   .object({
@@ -524,7 +515,7 @@ export const StrictWellSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The path for this field of view subgroup"),
-            })
+            }),
           )
           .min(1)
           .describe("The fields of view for this well"),

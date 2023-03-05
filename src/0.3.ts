@@ -3,22 +3,23 @@ import { z } from "zod";
 type PickRequired<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
 
 const Multiscales = z
-    .array(
-      z.object({
-        name: z.string().optional(),
-        datasets: z.array(z.object({ path: z.string() })).min(1),
-        version: z.literal("0.3").optional(),
-        axes: z.array(z.string()
-          .regex(new RegExp("^[xyzct]$")))
-          .min(2)
-          .refine((axes): axes is [...string[], "y", "x"]  => {
-            return axes[axes.length - 1] === "x" && axes[axes.length - 2] === "y";
-          }, "Last two axes must be 'yx'")
-      })
-    )
-    .min(1)
-    .describe("The multiscale datasets for this image");
-
+  .array(
+    z.object({
+      name: z.string().optional(),
+      datasets: z.array(z.object({ path: z.string() })).min(1),
+      version: z.literal("0.3").optional(),
+      axes: z.array(
+        z.string()
+          .regex(new RegExp("^[xyzct]$")),
+      )
+        .min(2)
+        .refine((axes): axes is [...string[], "y", "x"] => {
+          return axes[axes.length - 1] === "x" && axes[axes.length - 2] === "y";
+        }, "Last two axes must be 'yx'"),
+    }),
+  )
+  .min(1)
+  .describe("The multiscale datasets for this image");
 
 export const ImageSchema = z
   .object({
@@ -37,7 +38,7 @@ export const ImageSchema = z
             family: z.string().optional(),
             color: z.string(),
             active: z.boolean().optional(),
-          })
+          }),
         ),
       })
       .optional(),
@@ -45,15 +46,20 @@ export const ImageSchema = z
   .describe("JSON from OME-NGFF .zattrs");
 
 type StrictImageSchema = {
-  multiscales: PickRequired<z.infer<typeof Multiscales>[number], "version" | "name">[];
+  multiscales: PickRequired<
+    z.infer<typeof Multiscales>[number],
+    "version" | "name"
+  >[];
   omero: z.infer<typeof ImageSchema>["omero"];
-}
+};
 
-export const StrictImageSchema = ImageSchema.refine((data): data is StrictImageSchema => {
-  return data.multiscales.every((m) => {
-    return "version" in m && "name" in m;
-  });
-})
+export const StrictImageSchema = ImageSchema.refine(
+  (data): data is StrictImageSchema => {
+    return data.multiscales.every((m) => {
+      return "version" in m && "name" in m;
+    });
+  },
+);
 
 export const PlateSchema = z
   .object({
@@ -88,7 +94,7 @@ export const PlateSchema = z
               .int()
               .gte(0)
               .describe(
-                "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch"
+                "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
               )
               .optional(),
             endtime: z
@@ -96,10 +102,10 @@ export const PlateSchema = z
               .int()
               .gte(0)
               .describe(
-                "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch"
+                "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
               )
               .optional(),
-          })
+          }),
         )
         .min(1)
         .describe("Rows of the Plate grid")
@@ -107,7 +113,6 @@ export const PlateSchema = z
     }),
   })
   .describe("JSON from OME-NGFF Plate .zattrs");
-
 
 export const WellSchema = z
   .object({
@@ -125,7 +130,7 @@ export const WellSchema = z
                 .string()
                 .regex(new RegExp("^[A-Za-z0-9]+$"))
                 .describe("The path for this field of view subgroup"),
-            })
+            }),
           )
           .min(1)
           .describe("The fields of view for this well"),
