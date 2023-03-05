@@ -12,7 +12,7 @@ const Multiscales = z
           .min(2)
           .refine((axes): axes is [...string[], "y", "x"]  => {
             return axes[axes.length - 1] === "x" && axes[axes.length - 2] === "y";
-          })
+          }, "Last two axes must be 'yx'")
       })
     )
     .min(1)
