@@ -6,12 +6,9 @@ import * as os from "node:os";
 
 import { z } from "zod";
 import camelcase from "camelcase";
-import RefParser from "@apidevtools/json-schema-ref-parser";
 import { jsonSchemaToZodDereffed } from "json-schema-to-zod";
 
 let __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-
-let VERSIONS = ["0.1", "0.2", "0.3", "0.4", "latest"];
 
 let OVERRIDES = /** @type {const} */ ({
   axes: {
@@ -120,21 +117,20 @@ async function deref_strict(schema) {
   return base;
 }
 
-async function write_package_exports() {
+/** @param {string} version */
+async function write_package_exports(version) {
   let pkg = JSON.parse(
     await fs.readFile(path.join(__dirname, "..", "package.json"), {
       encoding: "utf8",
     }),
   );
 
-  pkg.exports = {};
+  pkg.exports = pkg.exports ?? {};
 
-  for (let version of VERSIONS) {
-    pkg.exports[version === "latest" ? "." : `./${version}`] = {
-      "types": `./dist/${version}.d.ts`,
-      "import": `./dist/${version}.js`,
-    };
-  }
+  pkg.exports[version === "latest" ? "." : `./${version}`] = {
+    "types": `./dist/${version}.d.ts`,
+    "import": `./dist/${version}.js`,
+  };
 
   await fs.writeFile(
     path.join(__dirname, "..", "package.json"),
@@ -181,12 +177,11 @@ async function write_module(version, { where }) {
 }
 
 async function main() {
+  let version = process.argv[2];
   let src = path.join(__dirname, "..", "src");
   await fs.mkdir(src).catch(() => {});
-  for (let version of VERSIONS) {
-    await write_module(version, { where: src });
-  }
-  await write_package_exports();
+  await write_module(version, { where: src });
+  await write_package_exports(version);
 }
 
 main();

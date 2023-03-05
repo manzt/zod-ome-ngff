@@ -83,7 +83,7 @@ The contents of `src/` are automatically generated from the
 [NGFF JSON specification](https://github.com/ome/ngff) via:
 
 ```sh
-pnpm generate-schemas
+node scripts/generate-schemas.mjs latest # or 0.1, 0.2, 0.3, 0.4, latest
 ```
 
 # changelogs

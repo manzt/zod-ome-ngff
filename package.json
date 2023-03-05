@@ -9,7 +9,6 @@
     "dist"
   ],
   "scripts": {
-    "generate-schemas": "node ./scripts/generate-schemas.mjs",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "check": "tsc && publint",
