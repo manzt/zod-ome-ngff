@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import * as url from "node:url";
@@ -7,12 +8,12 @@ import { z } from "zod";
 import camelcase from "camelcase";
 import * as glob from "glob";
 
-import * as v04 from "../src/0.4";
+import * as schemas from "../src/latest";
 
 let __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 let test_suite_files = await glob.glob(
-  path.join(__dirname, "..", "ngff", "0.4/tests/*.json"),
+  path.join(__dirname, "..", "ngff", "latest/tests/*.json"),
 );
 
 let Test = z.object({
@@ -36,12 +37,23 @@ describe.each(
         .then(JSON.parse)
         .then(Suite.parse)
     ),
-  )
-)("$description ($schema.id)", (suite) => { 
+  ),
+)("$description ($schema.id)", (suite) => {
   let cased = camelcase(suite.schema.id.split("/").pop()!);
   let name = cased.charAt(0).toUpperCase() + cased.slice(1) as keyof typeof v04;
-  let Schema = v04[name];
+  let Schema = schemas[name];
   test.each(suite.tests)("$formerly", (test) => {
     expect(Schema.safeParse(test.data).success).toBe(test.valid);
+  });
+});
+
+import * as schemas from "../src/0.4";
+import { gather_test_cases } from "./utils";
+
+let cases = await gather_test_cases("0.4", schemas);
+
+describe.each(cases)("$description ($schema.id)", ({ Schema, tests }) => {
+  test.each(tests)("$formerly", ({ data, valid }) => {
+    expect(Schema.safeParse(data).success).toBe(valid);
   });
 });
