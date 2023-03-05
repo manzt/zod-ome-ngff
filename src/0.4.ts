@@ -165,7 +165,6 @@ export const Bf2RawSchema = z
     "bioformats2raw.layout": z
       .literal(3)
       .describe("The top-level identifier metadata added by bioformats2raw")
-      .optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
@@ -178,7 +177,6 @@ export const OmeSchema = z
       .describe(
         "An array of the same length and the same order as the images defined in the OME-XML",
       )
-      .optional(),
   })
   .describe("JSON from OME-NGFF OME/.zattrs linked to an OME-XML file");
 
@@ -258,23 +256,25 @@ export const ImageSchema = z
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-type StrictMultiscales = PickRequired<
-  z.infer<typeof Multiscales.element>,
-  // TODO: required but not actually properties on base schema
-  "version" | "name" // | "metadata" | "type"
->[];
+type StrictImageSchema = {
+  multiscales: PickRequired<
+    z.infer<typeof Multiscales.element>,
+    // TODO: required but not actually properties on base schema
+    "version" | "name" // | "metadata" | "type"
+  >[];
+  omero: z.infer<typeof ImageSchema>["omero"];
+}
 
-export const StrictImageSchema = z
-  .object({
-    multiscales: Multiscales.refine((val): val is StrictMultiscales => {
-      return val.every((m) => "version" in m && "name" in m);
-    }),
-    omero: Omero.optional(),
-  })
-  .describe("JSON from OME-NGFF .zattrs");
+export const StrictImageSchema = ImageSchema.refine(
+  (data): data is StrictImageSchema => {
+    return data.multiscales.every((m) => {
+      return "version" in m && "name" in m;
+    });
+  },
+);
 
 // Label
-//
+
 export const LabelSchema = z
   .object({
     "image-label": z
@@ -313,7 +313,7 @@ export const LabelSchema = z
           .describe("The source of this label image")
           .optional(),
         version: z
-          .enum(["0.4"])
+          .literal("0.4")
           .describe("The version of the specification")
           .optional(),
       }),
@@ -353,7 +353,7 @@ export const WellSchema = z
           .min(1)
           .describe("The fields of view for this well"),
         version: z
-          .enum(["0.4"])
+          .literal("0.4")
           .describe("The version of the specification")
           .optional(),
       }),
