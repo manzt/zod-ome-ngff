@@ -291,8 +291,6 @@ const Multiscales = z
         .min(1),
       axes: Axes,
       coordinateTransformations: CoordinateTransformations.optional(),
-      type: z.string().optional(),
-      metadata: z.any().optional(),
     }),
   )
   .min(1)
@@ -317,6 +315,7 @@ export const StrictImageSchema = ImageSchema.refine(
   (val): val is StrictImageSchema => {
     return val.multiscales.every((m) => "version" in m && "name" in m);
   },
+  "Missing required 'version' or 'name' fields in multiscales.",
 );
 
 // Label
