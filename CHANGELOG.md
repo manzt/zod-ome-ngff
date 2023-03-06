@@ -1,5 +1,11 @@
 # ome-ngff-schema-zod
 
+## 0.1.2
+
+### Patch Changes
+
+- fix: build package in publish script... ([`7a0bafc`](https://github.com/manzt/ome-ngff-schema-zod/commit/7a0bafc9d0e399ee56c686bac3c91c9e7a32346b))
+
 ## 0.1.1
 
 ### Patch Changes
