@@ -12,7 +12,8 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "check": "tsc && publint",
-    "build": "tsc && publint"
+    "build": "tsc && publint",
+    "fmt": "deno fmt src test"
   },
   "exports": {
     "./0.1": {

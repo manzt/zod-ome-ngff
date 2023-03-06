@@ -17,12 +17,8 @@ describe("v0.3", async () => {
   test.each(await glob("image/invalid/*.json"))(
     "plate: invalid $name",
     async (file) => {
-      // TODO: handle invalid axes order?
-      let should_skip = file.name.includes("invalid_axes_order");
-      it.skipIf(should_skip)("should be invalid", async () => {
-        let result = v03.ImageSchema.safeParse(await file.json());
-        expect(result.success).toBe(false);
-      });
+      let result = v03.ImageSchema.safeParse(await file.json());
+      expect(result.success).toBe(false);
     },
   );
 
