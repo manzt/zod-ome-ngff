@@ -45,7 +45,7 @@ export const ImageSchema = z
 type StrictImageSchema = {
   multiscales: PickRequired<
     z.infer<typeof Multiscales>[number],
-    "version" | "name"
+    "version" | "name" | "metadata" // | "type"
   >[];
   omero: z.infer<typeof ImageSchema>["omero"];
 };
@@ -53,7 +53,7 @@ type StrictImageSchema = {
 export const StrictImageSchema = ImageSchema.refine(
   (data): data is StrictImageSchema => {
     return data.multiscales.every((m) => {
-      return "version" in m && "name" in m;
+      return "version" in m && "name" in m && "metadata" in m;
     });
   },
 );
