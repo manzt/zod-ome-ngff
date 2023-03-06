@@ -1,5 +1,13 @@
 # zod-ome-ngff
 
+## 0.1.1
+
+### Patch Changes
+
+- fix: loosen strictness for "metadata" and "type" in image multiscales since not specified in NGFF spec ([#8](https://github.com/manzt/zod-ome-ngff/pull/8))
+
+- chore: rename package zod-ome-ngff ([#9](https://github.com/manzt/zod-ome-ngff/pull/9))
+
 ## 0.1.2
 
 ### Patch Changes
