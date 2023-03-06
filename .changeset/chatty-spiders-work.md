@@ -2,4 +2,4 @@
 "ome-ngff-schema-zod": patch
 ---
 
-chore: stricter metadata
+fix: loosen strictness for "metadata" and "type" in image multiscales since not specified in NGFF spec
