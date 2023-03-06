@@ -1,4 +1,4 @@
-import { describe, expect, it, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import * as schemas from "../src/0.4";
 import { gather_test_cases } from "./utils";
 

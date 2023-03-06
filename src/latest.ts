@@ -111,8 +111,7 @@ const PlateWells = z
     }),
   )
   .min(1)
-  .describe("The wells of the plate")
-  .optional();
+  .describe("The wells of the plate");
 
 const FieldCount = z
   .number()
@@ -123,19 +122,18 @@ const FieldCount = z
 
 export const PlateSchema = z
   .object({
-    plate: z
-      .object({
-        name: z.string().describe("The name of the plate").optional(),
-        version: z
-          .literal("0.5-dev")
-          .describe("The version of the specification")
-          .optional(),
-        aquisitions: Aquisitions.optional(),
-        field_count: FieldCount,
-        columns: Columns,
-        rows: Rows,
-        wells: PlateWells,
-      }),
+    plate: z.object({
+      name: z.string().describe("The name of the plate").optional(),
+      version: z
+        .literal("0.5-dev")
+        .describe("The version of the specification")
+        .optional(),
+      acquisitions: Aquisitions.optional(),
+      field_count: FieldCount,
+      columns: Columns,
+      rows: Rows,
+      wells: PlateWells,
+    }),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
@@ -186,7 +184,7 @@ export const OmeSchema = z
   .describe("JSON from OME-NGFF OME/.zattrs linked to an OME-XML file");
 
 // Image
-//
+
 const Axis = z.object({
   name: z.string(),
   type: z.string().optional(),
@@ -205,52 +203,111 @@ const CoordinateTransformation = z.union([
   }),
 ]);
 
+const CoordinateTransformations = z.array(CoordinateTransformation)
+  .min(1)
+  .superRefine((ts, ctx) => {
+    let scales = ts.filter((t): t is { type: "scale"; scale: number[] } =>
+      t.type === "scale"
+    );
+    let unique_scales = new Set(scales.map((s) => s.scale.join(".")));
+    if (scales.length !== unique_scales.size) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `No duplicate scale transformations allowed.`,
+      });
+    }
+    if (
+      ts.some((t) => t.type === "translation") &&
+      scales.length === 0
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Missing scale for translation.`,
+      });
+    }
+  });
+
+const Axes = z.array(Axis)
+  .min(2)
+  .superRefine((axes, ctx) => {
+    let names = axes.map((ax) => ax.name);
+    if (axes.length !== new Set(names).size) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `No duplicate axes allowed.`,
+      });
+    }
+    if (axes.length > 5) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Too many axes.`,
+      });
+    }
+    let total_space_axes = axes.filter((ax) => ax.type === "space").length;
+    if (total_space_axes <= 1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Missing space axes.",
+      });
+    }
+    if (total_space_axes > 3) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Too many space axes.",
+      });
+    }
+  });
+
+const Omero = z
+  .object({
+    channels: z.array(
+      z.object({
+        window: z.object({
+          end: z.number(),
+          max: z.number(),
+          min: z.number(),
+          start: z.number(),
+        }),
+        label: z.string().optional(),
+        family: z.string().optional(),
+        color: z.string(),
+        active: z.boolean().optional(),
+      }),
+    ),
+  });
+
+const Multiscales = z
+  .array(
+    z.object({
+      name: z.string().optional(),
+      version: z.literal("0.5-dev").optional(),
+      datasets: z
+        .array(
+          z.object({
+            path: z.string(),
+            coordinateTransformations: CoordinateTransformations,
+          }),
+        )
+        .min(1),
+      axes: Axes,
+      coordinateTransformations: CoordinateTransformations.optional(),
+      type: z.string().optional(),
+      metadata: z.any().optional(),
+    }),
+  )
+  .min(1)
+  .describe("The multiscale datasets for this image");
+
 export const ImageSchema = z
   .object({
-    multiscales: z
-      .array(
-        z.object({
-          name: z.string().optional(),
-          datasets: z
-            .array(
-              z.object({
-                path: z.string(),
-                coordinateTransformations: z.array(CoordinateTransformation),
-              }),
-            )
-            .min(1),
-          version: z.literal("0.5-dev").optional(),
-          axes: z.array(Axis),
-          coordinateTransformations: z.array(CoordinateTransformation)
-            .optional(),
-        }),
-      )
-      .min(1)
-      .describe("The multiscale datasets for this image"),
-    omero: z
-      .object({
-        channels: z.array(
-          z.object({
-            window: z.object({
-              end: z.number(),
-              max: z.number(),
-              min: z.number(),
-              start: z.number(),
-            }),
-            label: z.string().optional(),
-            family: z.string().optional(),
-            color: z.string(),
-            active: z.boolean().optional(),
-          }),
-        ),
-      })
-      .optional(),
+    multiscales: Multiscales,
+    omero: Omero.optional(),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
 type StrictImageSchema = {
   multiscales: PickRequired<
-    z.infer<typeof ImageSchema>["multiscales"][number],
+    z.infer<typeof Multiscales.element>,
     "version" | "name"
   >[];
   omero: z.infer<typeof ImageSchema>["omero"];
@@ -258,7 +315,7 @@ type StrictImageSchema = {
 
 export const StrictImageSchema = ImageSchema.refine(
   (val): val is StrictImageSchema => {
-    return "version" in val && "name" in val;
+    return val.multiscales.every((m) => "version" in m && "name" in m);
   },
 );
 
@@ -284,6 +341,15 @@ export const LabelSchema = z
           )
           .min(1)
           .describe("The colors for this label image")
+          .superRefine((colors, ctx) => {
+            let label_values = colors.map((color) => color["label-value"]);
+            if (colors.length !== new Set(label_values).size) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `No duplicate color_labels allowed.`,
+              });
+            }
+          })
           .optional(),
         properties: z
           .array(

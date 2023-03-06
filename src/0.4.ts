@@ -230,19 +230,7 @@ const CoordinateTransformation = z.union([
   }),
 ]);
 
-const CoordinateTransformations = z.array(
-  z.union([
-    z.object({ type: z.enum(["identity"]) }),
-    z.object({
-      type: z.enum(["scale"]),
-      scale: z.array(z.number()).min(2),
-    }),
-    z.object({
-      type: z.enum(["translation"]),
-      translation: z.array(z.number()).min(2),
-    }),
-  ]),
-)
+const CoordinateTransformations = z.array(CoordinateTransformation)
   .min(1)
   .superRefine((ts, ctx) => {
     let scales = ts.filter((t): t is { type: "scale"; scale: number[] } =>
@@ -280,7 +268,7 @@ const Multiscales = z
         .min(1),
       version: z.literal("0.4").optional(),
       axes: Axes,
-      coordinateTransformations: z.array(CoordinateTransformation).optional(),
+      coordinateTransformations: CoordinateTransformations.optional(),
     }),
   )
   .min(1)
