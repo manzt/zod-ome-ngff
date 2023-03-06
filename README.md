@@ -1,7 +1,7 @@
-# ome-ngff-schema-zod
+# zod-ome-ngff
 
-[![Node version](https://img.shields.io/npm/v/ome-ngff-schema-zod.svg)](https://www.npmjs.com/package/ome-ngff-schema-zod)
-![GitHub Actions](https://github.com/manzt/ome-ngff-schema-zod/actions/workflows/ci.yml/badge.svg)
+[![Node version](https://img.shields.io/npm/v/zod-ome-ngff.svg)](https://www.npmjs.com/package/zod-ome-ngff)
+![GitHub Actions](https://github.com/manzt/zod-ome-ngff/actions/workflows/ci.yml/badge.svg)
 
 > **Warning**: here be dragons...
 
@@ -14,14 +14,14 @@ metadata in JavaScript and TypeScript.
 ## install
 
 ```sh
-pnpm install zod ome-ngff-schema-zod
+pnpm install zod zod-ome-ngff
 ```
 
 ## usage
 
 ```typescript
 import { z } from "zod";
-import * as v04 from "ome-ngff-schema-zod/v04";
+import * as v04 from "zod-ome-ngff/v04";
 
 let Attrs = z.union([
   v04.StrictImageSchema,
@@ -70,12 +70,12 @@ if ("plate" in attrs) {
 Validators are exported for `v0.1`, `v0.2`, `v0.3`, and `v0.4` schemas.
 
 ```typescript
-import * as v01 from "ome-ngff-schema-zod/0.1";
-import * as v02 from "ome-ngff-schema-zod/0.2";
-import * as v03 from "ome-ngff-schema-zod/0.3";
-import * as v04 from "ome-ngff-schema-zod/0.4";
+import * as v01 from "zod-ome-ngff/0.1";
+import * as v02 from "zod-ome-ngff/0.2";
+import * as v03 from "zod-ome-ngff/0.3";
+import * as v04 from "zod-ome-ngff/0.4";
 
-import * as schemas from "ome-ngff-schema-zod"; // latest
+import * as schemas from "zod-ome-ngff"; // latest
 ```
 
 ## development
