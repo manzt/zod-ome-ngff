@@ -11,13 +11,13 @@ from the NGFF JSON specification and manually refined, providing
 composable validators for working with NGFF
 metadata in JavaScript and TypeScript.
 
-# install
+## install
 
 ```sh
 pnpm install zod ome-ngff-schema-zod
 ```
 
-# usage
+## usage
 
 ```typescript
 import { z } from "zod";
@@ -65,7 +65,7 @@ if ("plate" in attrs) {
 }
 ```
 
-# sub-packages
+## sub-packages
 
 Validators are exported for `v0.1`, `v0.2`, `v0.3`, and `v0.4` schemas.
 
@@ -78,7 +78,7 @@ import * as v04 from "ome-ngff-schema-zod/0.4";
 import * as schemas from "ome-ngff-schema-zod"; // latest
 ```
 
-# development
+## development
 
 The contents of `src/` are automatically generated from the
 [NGFF JSON specification](https://github.com/ome/ngff) via:
@@ -87,7 +87,7 @@ The contents of `src/` are automatically generated from the
 node scripts/generate-schemas.mjs latest # or 0.1, 0.2, 0.3, 0.4, latest
 ```
 
-# changelogs
+## changelogs
 
 For changes to be reflected in package changelogs, run `pnpm changeset` and
 follow the prompts.
@@ -96,7 +96,12 @@ follow the prompts.
 > releases and changelogs, changes to the repository that don't effect these
 > won't need a changeset (e.g., documentation, tests).
 
-# release
+## release
 
 The [Changesets GitHub action](https://github.com/changesets/action) will create
 and update a PR that applies changesets and publishes new versions.
+
+## related
+
+- [`ome/ngff`](https://github.com/ome/ngff) - offcial specification (JSON schemas)
+- [`JaneliaSciComp/pydantic-ome-ngff`](https://github.com/JaneliaSciComp/pydantic-ome-ngff) - pydantic models for ngff (Python) 
