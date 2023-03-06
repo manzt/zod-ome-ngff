@@ -1,5 +1,11 @@
 # ome-ngff-schema-zod
 
+## 0.1.1
+
+### Patch Changes
+
+- feat: manual refinement of generated zod schemas ([#5](https://github.com/manzt/ome-ngff-schema-zod/pull/5))
+
 ## 0.1.0
 
 ### Minor Changes
