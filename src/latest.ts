@@ -1,53 +1,46 @@
 import { z } from "zod";
 
-type PickRequired<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
+const StrictAcquisition = z.object({
+  id: z
+    .number()
+    .int()
+    .gte(0)
+    .describe(
+      "A unique identifier within the context of the plate",
+    ),
+  maximumfieldcount: z
+    .number()
+    .int()
+    .gt(0)
+    .describe(
+      "The maximum number of fields of view for the acquisition",
+    ),
+  name: z
+    .string()
+    .describe("The name of the acquisition"),
+  description: z
+    .string()
+    .describe("The description of the acquisition")
+    .optional(),
+  starttime: z
+    .number()
+    .int()
+    .gte(0)
+    .describe(
+      "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
+    )
+    .optional(),
+  endtime: z
+    .number()
+    .int()
+    .gte(0)
+    .describe(
+      "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
+    )
+    .optional(),
+});
 
 // Plate
-const Aquisitions = z
-  .array(
-    z.object({
-      id: z
-        .number()
-        .int()
-        .gte(0)
-        .describe(
-          "A unique identifier within the context of the plate",
-        ),
-      maximumfieldcount: z
-        .number()
-        .int()
-        .gt(0)
-        .describe(
-          "The maximum number of fields of view for the acquisition",
-        )
-        .optional(),
-      name: z
-        .string()
-        .describe("The name of the acquisition")
-        .optional(),
-      description: z
-        .string()
-        .describe("The description of the acquisition")
-        .optional(),
-      starttime: z
-        .number()
-        .int()
-        .gte(0)
-        .describe(
-          "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
-        )
-        .optional(),
-      endtime: z
-        .number()
-        .int()
-        .gte(0)
-        .describe(
-          "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
-        )
-        .optional(),
-    }),
-  )
-  .describe("The acquisitions for this plate");
 
 const Columns = z
   .array(
@@ -120,45 +113,35 @@ const FieldCount = z
   .describe("The maximum number of fields per view across all wells")
   .optional();
 
+function createPlateSchema<T extends z.ZodTypeAny>(Acquisition: T) {
+  return z.object({
+    name: z.string().describe("The name of the plate"),
+    version: z
+      .literal("0.5-dev")
+      .describe("The version of the specification"),
+    acquisitions: z.array(Acquisition)
+      .describe("The acquisitions for this plate")
+      .optional(),
+    field_count: FieldCount,
+    columns: Columns,
+    rows: Rows,
+    wells: PlateWells,
+  });
+}
+
 export const PlateSchema = z
   .object({
-    plate: z.object({
-      name: z.string().describe("The name of the plate").optional(),
-      version: z
-        .literal("0.5-dev")
-        .describe("The version of the specification")
-        .optional(),
-      acquisitions: Aquisitions.optional(),
-      field_count: FieldCount,
-      columns: Columns,
-      rows: Rows,
-      wells: PlateWells,
+    plate: createPlateSchema(
+      StrictAcquisition.partial({ maximumfieldcount: true, name: true }),
+    ).partial({
+      version: true,
+      name: true,
     }),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-type StrictAquisition = PickRequired<
-  z.infer<typeof Aquisitions.element>,
-  "name" | "maximumfieldcount"
->;
-
 export const StrictPlateSchema = z
-  .object({
-    plate: z
-      .object({
-        name: z.string().describe("The name of the plate"),
-        version: z.literal("0.5-dev").describe(
-          "The version of the specification",
-        ),
-        acquisitions: Aquisitions.refine((val): val is StrictAquisition[] => {
-          return val.every((a) => "name" in a && "maximumfieldcount" in a);
-        }).optional(),
-        field_count: FieldCount,
-        columns: Columns,
-        rows: Rows,
-        wells: PlateWells,
-      }),
-  })
+  .object({ plate: createPlateSchema(StrictAcquisition) })
   .describe("JSON from OME-NGFF .zattrs");
 
 // Bf2Raw
@@ -192,13 +175,13 @@ const Axis = z.object({
 });
 
 const CoordinateTransformation = z.union([
-  z.object({ type: z.enum(["identity"]) }),
+  z.object({ type: z.literal("identity") }),
   z.object({
-    type: z.enum(["scale"]),
+    type: z.literal("scale"),
     scale: z.array(z.number()).min(2),
   }),
   z.object({
-    type: z.enum(["translation"]),
+    type: z.literal("translation"),
     translation: z.array(z.number()).min(2),
   }),
 ]);
@@ -276,155 +259,137 @@ const Omero = z
     ),
   });
 
-type Multiscales = z.infer<typeof Multiscales>;
-const Multiscales = z
-  .array(
-    z.object({
-      name: z.string().optional(),
-      version: z.literal("0.5-dev").optional(),
-      datasets: z
-        .array(
-          z.object({
-            path: z.string(),
-            coordinateTransformations: CoordinateTransformations,
-          }),
-        )
-        .min(1),
-      axes: Axes,
-      coordinateTransformations: CoordinateTransformations.optional(),
-    }),
-  )
-  .min(1)
-  .describe("The multiscale datasets for this image");
+const StrictMultiscale = z.object({
+  name: z.string(),
+  version: z.literal("0.5-dev"),
+  datasets: z
+    .array(
+      z.object({
+        path: z.string(),
+        coordinateTransformations: CoordinateTransformations,
+      }),
+    )
+    .min(1),
+  axes: Axes,
+  coordinateTransformations: CoordinateTransformations.optional(),
+});
 
-type ImageSchema = z.infer<typeof ImageSchema>;
-export const ImageSchema = z
-  .object({
-    multiscales: Multiscales,
+function createImageSchema<T extends z.ZodTypeAny>(Multiscale: T) {
+  return z.object({
+    multiscales: z.array(Multiscale)
+      .min(1)
+      .describe("The multiscale datasets for this image"),
     omero: Omero.optional(),
-  })
-  .describe("JSON from OME-NGFF .zattrs");
+  });
+}
 
-type StrictImageSchema = Omit<ImageSchema, "multiscales"> & {
-  multiscales: PickRequired<
-    Multiscales[number],
-    "version" | "name" // | "metadata" | "type"
-  >[];
-};
-
-export const StrictImageSchema = ImageSchema.refine(
-  (val): val is StrictImageSchema => {
-    return val.multiscales.every((m) => "version" in m && "name" in m);
-  },
-  "Missing required 'version' or 'name' fields in multiscales.",
+export const ImageSchema = createImageSchema(
+  StrictMultiscale.partial({ name: true, version: true }),
 );
+
+export const StrictImageSchema = createImageSchema(StrictMultiscale);
 
 // Label
 
+const StrictImageLabelSchema = z
+  .object({
+    colors: z
+      .array(
+        z.object({
+          "label-value": z.number().describe("The value of the label"),
+          rgba: z
+            .array(z.number().int().gte(0).lte(255))
+            .min(4)
+            .max(4)
+            .describe(
+              "The RGBA color stored as an array of four integers between 0 and 255",
+            )
+            .optional(),
+        }),
+      )
+      .min(1)
+      .describe("The colors for this label image")
+      .superRefine((colors, ctx) => {
+        let label_values = colors.map((color) => color["label-value"]);
+        if (colors.length !== new Set(label_values).size) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `No duplicate color_labels allowed.`,
+          });
+        }
+      }),
+    properties: z
+      .array(
+        z.object({
+          "label-value": z
+            .number()
+            .int()
+            .describe("The pixel value for this label"),
+        }),
+      )
+      .min(1)
+      .describe("The properties for this label image")
+      .optional(),
+    source: z
+      .object({ image: z.string().optional() })
+      .describe("The source of this label image")
+      .optional(),
+    version: z
+      .literal("0.5-dev")
+      .describe("The version of the specification"),
+  });
+
 export const LabelSchema = z
   .object({
-    "image-label": z
-      .object({
-        colors: z
-          .array(
-            z.object({
-              "label-value": z.number().describe("The value of the label"),
-              rgba: z
-                .array(z.number().int().gte(0).lte(255))
-                .min(4)
-                .max(4)
-                .describe(
-                  "The RGBA color stored as an array of four integers between 0 and 255",
-                )
-                .optional(),
-            }),
-          )
-          .min(1)
-          .describe("The colors for this label image")
-          .superRefine((colors, ctx) => {
-            let label_values = colors.map((color) => color["label-value"]);
-            if (colors.length !== new Set(label_values).size) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: `No duplicate color_labels allowed.`,
-              });
-            }
-          })
-          .optional(),
-        properties: z
-          .array(
-            z.object({
-              "label-value": z
-                .number()
-                .int()
-                .describe("The pixel value for this label"),
-            }),
-          )
-          .min(1)
-          .describe("The properties for this label image")
-          .optional(),
-        source: z
-          .object({ image: z.string().optional() })
-          .describe("The source of this label image")
-          .optional(),
-        version: z
-          .enum(["0.5-dev"])
-          .describe("The version of the specification")
-          .optional(),
-      }),
+    "image-label": StrictImageLabelSchema.partial({
+      colors: true,
+      version: true,
+    }),
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-export const StrictLabelSchema = LabelSchema.refine((val): val is {
-  "image-label": PickRequired<
-    z.infer<typeof LabelSchema>["image-label"],
-    "version" | "colors"
-  >;
-} => {
-  return "version" in val["image-label"] && "colors" in val["image-label"];
-});
+export const StrictLabelSchema = z
+  .object({ "image-label": StrictImageLabelSchema })
+  .describe("JSON from OME-NGFF .zattrs");
 
 // Well
 
-export const WellSchema = z
+const StrictInnerWellSchema = z
   .object({
-    well: z
-      .object({
-        images: z
-          .array(
-            z.object({
-              acquisition: z
-                .number()
-                .int()
-                .describe("A unique identifier within the context of the plate")
-                .optional(),
-              path: z
-                .string()
-                .regex(new RegExp("^[A-Za-z0-9]+$"))
-                .describe("The path for this field of view subgroup"),
-            }),
-          )
-          .min(1)
-          .superRefine((imgs, ctx) => {
-            let paths = imgs.map((img) => img.path);
-            if (imgs.length !== new Set(paths).size) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: `No duplicate images allowed.`,
-              });
-            }
-          })
-          .describe("The fields of view for this well"),
-        version: z
-          .literal("0.5-dev")
-          .describe("The version of the specification")
-          .optional(),
-      }),
-  })
+    images: z
+      .array(
+        z.object({
+          acquisition: z
+            .number()
+            .int()
+            .describe("A unique identifier within the context of the plate")
+            .optional(),
+          path: z
+            .string()
+            .regex(new RegExp("^[A-Za-z0-9]+$"))
+            .describe("The path for this field of view subgroup"),
+        }),
+      )
+      .min(1)
+      .superRefine((imgs, ctx) => {
+        let paths = imgs.map((img) => img.path);
+        if (imgs.length !== new Set(paths).size) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `No duplicate images allowed.`,
+          });
+        }
+      })
+      .describe("The fields of view for this well"),
+    version: z
+      .literal("0.5-dev")
+      .describe("The version of the specification"),
+  });
+
+export const WellSchema = z
+  .object({ well: StrictInnerWellSchema.partial({ version: true }) })
   .describe("JSON from OME-NGFF .zattrs");
 
-export const StrictWellSchema = WellSchema.refine((val): val is {
-  well: PickRequired<z.infer<typeof WellSchema>["well"], "version">;
-} => {
-  return "version" in val.well;
-});
+export const StrictWellSchema = z
+  .object({ well: StrictInnerWellSchema })
+  .describe("JSON from OME-NGFF .zattrs");

@@ -1,23 +1,21 @@
 import { z } from "zod";
 
-type PickRequired<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
+const StrictMultiscale = z.object({
+  name: z.string(),
+  datasets: z.array(z.object({ path: z.string() })).min(1),
+  version: z.literal("0.1"),
+  metadata: z
+    .object({
+      method: z.string().optional(),
+      version: z.string().optional(),
+    }),
+});
 
-type Multiscales = z.infer<typeof Multiscales>;
-const Multiscales = z.array(
-  z.object({
-    name: z.string().optional(),
-    datasets: z.array(z.object({ path: z.string() })).min(1),
-    version: z.literal("0.1").optional(),
-    metadata: z
-      .object({
-        method: z.string().optional(),
-        version: z.string().optional(),
-      })
-      .optional(),
-  }),
-)
-  .min(1)
-  .describe("The multiscale datasets for this image");
+const Multiscale = StrictMultiscale.partial({
+  name: true,
+  version: true,
+  metadata: true,
+});
 
 const Omero = z.object({
   channels: z.array(
@@ -36,28 +34,19 @@ const Omero = z.object({
   ).optional(),
 });
 
-type ImageSchema = z.infer<typeof ImageSchema>;
-export const ImageSchema = z
-  .object({
-    multiscales: Multiscales,
-    omero: Omero.optional(),
-  })
-  .describe("JSON from OME-NGFF .zattrs");
+function createImageSchema<T extends z.ZodTypeAny>(multiscale: T) {
+  return z
+    .object({
+      multiscales: z.array(multiscale).min(1).describe(
+        "The multiscale datasets for this image",
+      ),
+      omero: Omero.optional(),
+    })
+    .describe("JSON from OME-NGFF .zattrs");
+}
 
-type StrictImageSchema = Omit<ImageSchema, "multiscales"> & {
-  multiscales: PickRequired<
-    Multiscales[number],
-    "version" | "name" | "metadata" // | "type"
-  >[];
-};
-
-export const StrictImageSchema = ImageSchema.refine(
-  (val): val is StrictImageSchema => {
-    return val.multiscales.every((m) => {
-      return "version" in m && "name" in m && "metadata" in m;
-    });
-  },
-);
+export const ImageSchema = createImageSchema(Multiscale);
+export const StrictImageSchema = createImageSchema(StrictMultiscale);
 
 export const PlateSchema = z
   .object({
