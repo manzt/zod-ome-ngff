@@ -254,6 +254,7 @@ const CoordinateTransformations = z.array(CoordinateTransformation)
     }
   });
 
+type Multiscales = z.infer<typeof Multiscales>;
 const Multiscales = z
   .array(
     z.object({
@@ -291,6 +292,7 @@ const Omero = z.object({
   ),
 });
 
+type ImageSchema = z.infer<typeof ImageSchema>;
 export const ImageSchema = z
   .object({
     multiscales: Multiscales,
@@ -298,13 +300,11 @@ export const ImageSchema = z
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-type StrictImageSchema = {
+type StrictImageSchema = Omit<ImageSchema, "multiscales"> & {
   multiscales: PickRequired<
-    z.infer<typeof Multiscales.element>,
-    // TODO: required but not actually properties on base schema
+    Multiscales[number],
     "version" | "name" // | "metadata" | "type"
   >[];
-  omero: z.infer<typeof ImageSchema>["omero"];
 };
 
 export const StrictImageSchema = ImageSchema.refine(

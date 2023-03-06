@@ -2,6 +2,7 @@ import { z } from "zod";
 
 type PickRequired<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
 
+type Multiscales = z.infer<typeof Multiscales>;
 const Multiscales = z
   .array(
     z.object({
@@ -21,6 +22,7 @@ const Multiscales = z
   .min(1)
   .describe("The multiscale datasets for this image");
 
+type ImageSchema = z.infer<typeof ImageSchema>;
 export const ImageSchema = z
   .object({
     multiscales: Multiscales,
@@ -45,12 +47,11 @@ export const ImageSchema = z
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-type StrictImageSchema = {
+type StrictImageSchema = Omit<ImageSchema, "multiscales"> & {
   multiscales: PickRequired<
-    z.infer<typeof Multiscales>[number],
-    "version" | "name"
+    Multiscales[number],
+    "version" | "name" // | "metadata" | "type"
   >[];
-  omero: z.infer<typeof ImageSchema>["omero"];
 };
 
 export const StrictImageSchema = ImageSchema.refine(

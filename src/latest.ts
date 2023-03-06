@@ -276,6 +276,7 @@ const Omero = z
     ),
   });
 
+type Multiscales = z.infer<typeof Multiscales>;
 const Multiscales = z
   .array(
     z.object({
@@ -291,13 +292,12 @@ const Multiscales = z
         .min(1),
       axes: Axes,
       coordinateTransformations: CoordinateTransformations.optional(),
-      type: z.string().optional(),
-      metadata: z.any().optional(),
     }),
   )
   .min(1)
   .describe("The multiscale datasets for this image");
 
+type ImageSchema = z.infer<typeof ImageSchema>;
 export const ImageSchema = z
   .object({
     multiscales: Multiscales,
@@ -305,18 +305,18 @@ export const ImageSchema = z
   })
   .describe("JSON from OME-NGFF .zattrs");
 
-type StrictImageSchema = {
+type StrictImageSchema = Omit<ImageSchema, "multiscales"> & {
   multiscales: PickRequired<
-    z.infer<typeof Multiscales.element>,
-    "version" | "name"
+    Multiscales[number],
+    "version" | "name" // | "metadata" | "type"
   >[];
-  omero: z.infer<typeof ImageSchema>["omero"];
 };
 
 export const StrictImageSchema = ImageSchema.refine(
   (val): val is StrictImageSchema => {
     return val.multiscales.every((m) => "version" in m && "name" in m);
   },
+  "Missing required 'version' or 'name' fields in multiscales.",
 );
 
 // Label
