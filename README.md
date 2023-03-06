@@ -6,9 +6,10 @@
 > **Warning**: here be dragons...
 
 [zod](https://github.com/colinhacks/zod) schemas for
-[ome-ngff](https://github.com/ome/ngff). modules are automatically generated
-from NGFF JSON spec, providing composable validators for working with NGFF
-metadata in JavaScript and TypeScript projects.
+[ome-ngff](https://github.com/ome/ngff). modules are generated
+from the NGFF JSON specification and manually refined, providing 
+composable validators for working with NGFF
+metadata in JavaScript and TypeScript.
 
 # install
 
@@ -20,13 +21,13 @@ pnpm install zod ome-ngff-schema-zod
 
 ```typescript
 import { z } from "zod";
-import * as schemas from "ome-ngff-schema-zod";
+import * as v04 from "ome-ngff-schema-zod/v04";
 
 let Attrs = z.union([
-  schemas.StrictImageSchema,
-  schemas.StrictLabelSchema,
-  schemas.StrictPlateSchema,
-  schemas.StrictWellSchema,
+  v04.StrictImageSchema,
+  v04.StrictLabelSchema,
+  v04.StrictPlateSchema,
+  v04.StrictWellSchema,
 ]);
 
 let url =
