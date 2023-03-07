@@ -1,5 +1,11 @@
 # zod-ome-ngff
 
+## 0.1.4
+
+### Patch Changes
+
+- refactor: replace custom validators using zod generics ([#11](https://github.com/manzt/zod-ome-ngff/pull/11))
+
 ## 0.1.3
 
 ### Patch Changes
