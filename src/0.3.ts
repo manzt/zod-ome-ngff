@@ -1,31 +1,29 @@
 import { z } from "zod";
 
-type PickRequired<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
-
-type Multiscales = z.infer<typeof Multiscales>;
-const Multiscales = z
-  .array(
-    z.object({
-      name: z.string().optional(),
-      datasets: z.array(z.object({ path: z.string() })).min(1),
-      version: z.literal("0.3").optional(),
-      axes: z.array(
-        z.string()
-          .regex(new RegExp("^[xyzct]$")),
-      )
-        .min(2)
-        .refine((axes): axes is [...string[], "y", "x"] => {
-          return axes[axes.length - 1] === "x" && axes[axes.length - 2] === "y";
-        }, "Last two axes must be 'yx'"),
-    }),
+const StrictMultiscale = z.object({
+  name: z.string(),
+  datasets: z.array(z.object({ path: z.string() })).min(1),
+  version: z.literal("0.3"),
+  axes: z.array(
+    z.string()
+      .regex(new RegExp("^[xyzct]$")),
   )
-  .min(1)
-  .describe("The multiscale datasets for this image");
+    .min(2)
+    .refine((axes): axes is [...string[], "y", "x"] => {
+      return axes[axes.length - 1] === "x" && axes[axes.length - 2] === "y";
+    }, "Last two axes must be 'yx'"),
+});
 
-type ImageSchema = z.infer<typeof ImageSchema>;
-export const ImageSchema = z
-  .object({
-    multiscales: Multiscales,
+const Multiscale = StrictMultiscale.partial({
+  name: true,
+  version: true,
+});
+
+function createImageSchema<T extends z.ZodTypeAny>(multiscale: T) {
+  return z.object({
+    multiscales: z.array(multiscale)
+      .min(1)
+      .describe("The multiscale datasets for this image"),
     omero: z
       .object({
         channels: z.array(
@@ -45,22 +43,12 @@ export const ImageSchema = z
       })
       .optional(),
   })
-  .describe("JSON from OME-NGFF .zattrs");
+    .describe("JSON from OME-NGFF .zattrs");
+}
 
-type StrictImageSchema = Omit<ImageSchema, "multiscales"> & {
-  multiscales: PickRequired<
-    Multiscales[number],
-    "version" | "name" // | "metadata" | "type"
-  >[];
-};
+export const ImageSchema = createImageSchema(Multiscale);
 
-export const StrictImageSchema = ImageSchema.refine(
-  (data): data is StrictImageSchema => {
-    return data.multiscales.every((m) => {
-      return "version" in m && "name" in m;
-    });
-  },
-);
+export const StrictImageSchema = createImageSchema(StrictMultiscale);
 
 export const PlateSchema = z
   .object({
