@@ -10,6 +10,7 @@ describe("v0.1", async () => {
     async (file) => {
       let result = v01.ImageSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -18,6 +19,7 @@ describe("v0.1", async () => {
     async (file) => {
       let result = v01.ImageSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -26,6 +28,7 @@ describe("v0.1", async () => {
     async (file) => {
       let result = v01.PlateSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -34,6 +37,7 @@ describe("v0.1", async () => {
     async (file) => {
       let result = v01.PlateSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -42,6 +46,7 @@ describe("v0.1", async () => {
     async (file) => {
       let result = v01.WellSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -50,6 +55,7 @@ describe("v0.1", async () => {
     async (file) => {
       let result = v01.WellSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 });
@@ -63,6 +69,7 @@ describe("v0.1 (strict)", async () => {
   test.each(complete)("image: valid $name (strict)", async (file) => {
     let result = v01.StrictImageSchema.safeParse(await file.json());
     expect(result.success).toBe(true);
+    expect(result).toMatchSnapshot();
   });
 
   test.each(incomplete)("image: invalid $name (strict)", async (file) => {
@@ -71,6 +78,7 @@ describe("v0.1 (strict)", async () => {
     it.skipIf(should_skip)("should be invalid)", async () => {
       let result = v01.StrictImageSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     });
   });
 });

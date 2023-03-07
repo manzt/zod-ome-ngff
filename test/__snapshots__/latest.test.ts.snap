@@ -1,0 +1,2407 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/duplicate_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicate axes allowed.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/duplicate_scale.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicate scale transformations allowed.",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "coordinateTransformations"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/empty_transformations.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "coordinateTransformations"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_axes_count.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 2,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 2 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  },
+  {
+    "code": "custom",
+    "message": "Missing space axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_axis_type.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Missing space axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_channels_color.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "omero",
+      "channels",
+      0,
+      "color"
+    ],
+    "message": "Expected string, received number"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_channels_window.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "omero",
+      "channels",
+      0,
+      "window",
+      "end"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_multiscales_transform…' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_union",
+    "unionErrors": [
+      {
+        "issues": [
+          {
+            "received": "scale",
+            "code": "invalid_literal",
+            "expected": "identity",
+            "path": [
+              "multiscales",
+              0,
+              "coordinateTransformations",
+              0,
+              "type"
+            ],
+            "message": "Invalid literal value, expected \\"identity\\""
+          }
+        ],
+        "name": "ZodError"
+      },
+      {
+        "issues": [
+          {
+            "code": "too_small",
+            "minimum": 2,
+            "type": "array",
+            "inclusive": true,
+            "exact": false,
+            "message": "Array must contain at least 2 element(s)",
+            "path": [
+              "multiscales",
+              0,
+              "coordinateTransformations",
+              0,
+              "scale"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "expected": "number",
+            "received": "string",
+            "path": [
+              "multiscales",
+              0,
+              "coordinateTransformations",
+              0,
+              "scale",
+              0
+            ],
+            "message": "Expected number, received string"
+          }
+        ],
+        "name": "ZodError"
+      },
+      {
+        "issues": [
+          {
+            "received": "scale",
+            "code": "invalid_literal",
+            "expected": "translation",
+            "path": [
+              "multiscales",
+              0,
+              "coordinateTransformations",
+              0,
+              "type"
+            ],
+            "message": "Invalid literal value, expected \\"translation\\""
+          },
+          {
+            "code": "invalid_type",
+            "expected": "array",
+            "received": "undefined",
+            "path": [
+              "multiscales",
+              0,
+              "coordinateTransformations",
+              0,
+              "translation"
+            ],
+            "message": "Required"
+          }
+        ],
+        "name": "ZodError"
+      }
+    ],
+    "path": [
+      "multiscales",
+      0,
+      "coordinateTransformations",
+      0
+    ],
+    "message": "Invalid input"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_path.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "path"
+    ],
+    "message": "Expected string, received number"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_transformation_type.j…' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_union",
+    "unionErrors": [
+      {
+        "issues": [
+          {
+            "received": "translation",
+            "code": "invalid_literal",
+            "expected": "identity",
+            "path": [
+              "multiscales",
+              0,
+              "datasets",
+              0,
+              "coordinateTransformations",
+              0,
+              "type"
+            ],
+            "message": "Invalid literal value, expected \\"identity\\""
+          }
+        ],
+        "name": "ZodError"
+      },
+      {
+        "issues": [
+          {
+            "received": "translation",
+            "code": "invalid_literal",
+            "expected": "scale",
+            "path": [
+              "multiscales",
+              0,
+              "datasets",
+              0,
+              "coordinateTransformations",
+              0,
+              "type"
+            ],
+            "message": "Invalid literal value, expected \\"scale\\""
+          }
+        ],
+        "name": "ZodError"
+      },
+      {
+        "issues": [
+          {
+            "code": "invalid_type",
+            "expected": "array",
+            "received": "undefined",
+            "path": [
+              "multiscales",
+              0,
+              "datasets",
+              0,
+              "coordinateTransformations",
+              0,
+              "translation"
+            ],
+            "message": "Required"
+          }
+        ],
+        "name": "ZodError"
+      }
+    ],
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "coordinateTransformations",
+      0
+    ],
+    "message": "Invalid input"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_version.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "received": "0.3",
+    "code": "invalid_literal",
+    "expected": "0.5-dev",
+    "path": [
+      "multiscales",
+      0,
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.5-dev\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_axes_name.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "axes",
+      0,
+      "name"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "axes",
+      1,
+      "name"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_datasets.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "datasets"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_path.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "path"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_scale.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Missing scale for translation.",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "coordinateTransformations"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_space_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Missing space axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/missing_transformations.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "coordinateTransformations"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/no_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 2,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 2 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  },
+  {
+    "code": "custom",
+    "message": "Missing space axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/no_datasets.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "datasets"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/no_multiscales.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "multiscales"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/one_space_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Missing space axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/too_many_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Too many axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/too_many_space_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Too many space axes.",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'valid/custom_type_axes.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "angle",
+            "type": "custom",
+          },
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+        ],
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'valid/invalid_axis_units.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micron",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  0.13,
+                  0.13,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+        ],
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'valid/mismatch_axes_units.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "t",
+            "type": "time",
+            "units": "micrometer",
+          },
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  0.13,
+                  0.13,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+        ],
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'valid/missing_name.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "path/to/0",
+          },
+        ],
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'valid/missing_version.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "path/to/0",
+          },
+        ],
+        "name": "example",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/image.schema' > 'valid/untyped_axes.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "angle",
+          },
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+        ],
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/image.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+        ],
+        "name": "simple_image",
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/image_metadata.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "path/to/0",
+          },
+        ],
+        "name": "example",
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/image_omero.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "t",
+            "type": "time",
+          },
+          {
+            "name": "c",
+            "type": "channel",
+          },
+          {
+            "name": "z",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  0.5,
+                  0.13,
+                  0.13,
+                ],
+                "type": "scale",
+              },
+              {
+                "translation": [
+                  0,
+                  9,
+                  0.5,
+                  25.74,
+                  21.58,
+                ],
+                "type": "translation",
+              },
+            ],
+            "path": "0",
+          },
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  1,
+                  0.26,
+                  0.26,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "1",
+          },
+        ],
+        "name": "image_with_omero_metadata",
+        "version": "0.5-dev",
+      },
+    ],
+    "omero": {
+      "channels": [
+        {
+          "active": true,
+          "color": "00FF00",
+          "family": "linear",
+          "label": "FITC",
+          "window": {
+            "end": 813,
+            "max": 870,
+            "min": 102,
+            "start": 82,
+          },
+        },
+        {
+          "active": true,
+          "color": "FF0000",
+          "family": "linear",
+          "label": "RD-TR-PE",
+          "window": {
+            "end": 815,
+            "max": 441,
+            "min": 129,
+            "start": 78,
+          },
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/multiscales_example.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "t",
+            "type": "time",
+          },
+          {
+            "name": "c",
+            "type": "channel",
+          },
+          {
+            "name": "z",
+            "type": "space",
+          },
+          {
+            "name": "y",
+            "type": "space",
+          },
+          {
+            "name": "x",
+            "type": "space",
+          },
+        ],
+        "coordinateTransformations": [
+          {
+            "scale": [
+              0.1,
+              1,
+              1,
+              1,
+              1,
+            ],
+            "type": "scale",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  0.5,
+                  0.5,
+                  0.5,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "1",
+          },
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                  2,
+                  2,
+                  2,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "2",
+          },
+        ],
+        "name": "example",
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/multiscales_transformati…' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          {
+            "name": "y",
+            "type": "space",
+            "units": "micrometer",
+          },
+          {
+            "name": "x",
+            "type": "space",
+            "units": "micrometer",
+          },
+        ],
+        "coordinateTransformations": [
+          {
+            "scale": [
+              10,
+              10,
+            ],
+            "type": "scale",
+          },
+        ],
+        "datasets": [
+          {
+            "coordinateTransformations": [
+              {
+                "scale": [
+                  1,
+                  1,
+                ],
+                "type": "scale",
+              },
+            ],
+            "path": "0",
+          },
+        ],
+        "name": "image_with_coordinateTransformations",
+        "version": "0.5-dev",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/colors_duplicate' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicate color_labels allowed.",
+    "path": [
+      "image-label",
+      "colors"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/colors_no_label_value' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "image-label",
+      "colors",
+      0,
+      "label-value"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/colors_rgba_length' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 4,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 4 element(s)",
+    "path": [
+      "image-label",
+      "colors",
+      0,
+      "rgba"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/colors_rgba_type' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_big",
+    "maximum": 255,
+    "type": "number",
+    "inclusive": true,
+    "exact": false,
+    "message": "Number must be less than or equal to 255",
+    "path": [
+      "image-label",
+      "colors",
+      0,
+      "rgba",
+      3
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/empty_colors' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "image-label",
+      "colors"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/empty_properties' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "image-label",
+      "properties"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/minimal' 1`] = `
+{
+  "data": {
+    "image-label": {
+      "colors": [
+        {
+          "label-value": 1,
+          "rgba": [
+            0,
+            0,
+            0,
+            0,
+          ],
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/minimal_properties' 1`] = `
+{
+  "data": {
+    "image-label": {
+      "colors": [
+        {
+          "label-value": 1,
+          "rgba": [
+            0,
+            0,
+            0,
+            0,
+          ],
+        },
+      ],
+      "properties": [
+        {
+          "label-value": 1,
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the image-label JSON schema' - 'schemas/label.schema' > 'image-label/properties_no_label_value' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "image-label",
+      "properties",
+      0,
+      "label-value"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acquisition_negative_starttime' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 0,
+    "type": "number",
+    "inclusive": true,
+    "exact": false,
+    "message": "Number must be greater than or equal to 0",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "starttime"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acquisition_noninteger_endtime' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "endtime"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acquisition_noninteger_starttime' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "starttime"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acquisition_zero_maximumfieldco…' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 0,
+    "type": "number",
+    "inclusive": false,
+    "exact": false,
+    "message": "Number must be greater than 0",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "maximumfieldcount"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/duplicate_columns' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicates columns allowed.",
+    "path": [
+      "plate",
+      "columns"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/duplicate_rows' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicates rows allowed.",
+    "path": [
+      "plate",
+      "rows"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/duplicate_rows' 2`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicates columns allowed.",
+    "path": [
+      "plate",
+      "columns"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/empty_columns' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "plate",
+      "columns"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/empty_rows' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "plate",
+      "rows"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/empty_wells' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "object",
+    "path": [
+      "plate",
+      "wells"
+    ],
+    "message": "Expected array, received object"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/invalid_version' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "received": "foo",
+    "code": "invalid_literal",
+    "expected": "0.5-dev",
+    "path": [
+      "plate",
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.5-dev\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/minimal_acquisitions' 1`] = `
+{
+  "data": {
+    "plate": {
+      "acquisitions": [
+        {
+          "id": 0,
+        },
+      ],
+      "columns": [
+        {
+          "name": "A",
+        },
+      ],
+      "rows": [
+        {
+          "name": "1",
+        },
+      ],
+      "wells": [
+        {
+          "columnIndex": 0,
+          "path": "A/1",
+          "rowIndex": 0,
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/minimal_no_acquisitions' 1`] = `
+{
+  "data": {
+    "plate": {
+      "columns": [
+        {
+          "name": "A",
+        },
+      ],
+      "rows": [
+        {
+          "name": "1",
+        },
+      ],
+      "wells": [
+        {
+          "columnIndex": 0,
+          "path": "A/1",
+          "rowIndex": 0,
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_acquisition_id' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "id"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_column_name' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "columns",
+      0,
+      "name"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_columns' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "columns"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_row_name' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "rows",
+      0,
+      "name"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_rows' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "rows"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_well_columnIndex' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "columnIndex"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_well_path' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "path"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_well_rowIndex' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "rowIndex"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/missing_wells' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "wells"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/negative_acquisition_id' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 0,
+    "type": "number",
+    "inclusive": true,
+    "exact": false,
+    "message": "Number must be greater than or equal to 0",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "id"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/negative_endtime' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 0,
+    "type": "number",
+    "inclusive": true,
+    "exact": false,
+    "message": "Number must be greater than or equal to 0",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "endtime"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non_alphanumeric_column' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid",
+    "path": [
+      "plate",
+      "columns",
+      0,
+      "name"
+    ]
+  },
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "path"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non_alphanumeric_row' 1`] = `
+{
+  "data": {
+    "plate": {
+      "columns": [
+        {
+          "name": "A",
+        },
+      ],
+      "rows": [
+        {
+          "name": "A1",
+        },
+      ],
+      "wells": [
+        {
+          "columnIndex": 0,
+          "path": "A/A1",
+          "rowIndex": 0,
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non_integer_acquisition_id' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "id"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non_integer_acquisition_maximum…' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "maximumfieldcount"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/well_1group' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "path"
+    ]
+  },
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "columnIndex"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/well_3groups' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "path"
+    ]
+  },
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "wells",
+      0,
+      "columnIndex"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/zero_field_count' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 0,
+    "type": "number",
+    "inclusive": false,
+    "exact": false,
+    "message": "Number must be greater than 0",
+    "path": [
+      "plate",
+      "field_count"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict image-label JSON…' - 'schemas/strict_label.schema' > 'image-label/no_colors' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "image-label",
+      "colors"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict image-label JSON…' - 'schemas/strict_label.schema' > 'image-label/no_version' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_literal",
+    "expected": "0.5-dev",
+    "path": [
+      "image-label",
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.5-dev\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/missing_acquisition_maximumfiel…' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "maximumfieldcount"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/missing_acquisition_name' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "acquisitions",
+      0,
+      "name"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/missing_name' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "plate",
+      "name"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/missing_version' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_literal",
+    "expected": "0.5-dev",
+    "path": [
+      "plate",
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.5-dev\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/strict_acquisitions' 1`] = `
+{
+  "data": {
+    "plate": {
+      "acquisitions": [
+        {
+          "id": 0,
+          "maximumfieldcount": 1,
+          "name": "0",
+        },
+      ],
+      "columns": [
+        {
+          "name": "A",
+        },
+      ],
+      "name": "test plate",
+      "rows": [
+        {
+          "name": "1",
+        },
+      ],
+      "version": "0.5-dev",
+      "wells": [
+        {
+          "columnIndex": 0,
+          "path": "A/1",
+          "rowIndex": 0,
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/strict_no_acquisitions' 1`] = `
+{
+  "data": {
+    "plate": {
+      "columns": [
+        {
+          "name": "A",
+        },
+      ],
+      "name": "test plate",
+      "rows": [
+        {
+          "name": "1",
+        },
+      ],
+      "version": "0.5-dev",
+      "wells": [
+        {
+          "columnIndex": 0,
+          "path": "A/1",
+          "rowIndex": 0,
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the strict well JSON schema' - 'schemas/strict_well.schema' > 'plate/missing_version' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_literal",
+    "expected": "0.5-dev",
+    "path": [
+      "well",
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.5-dev\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the strict well JSON schema' - 'schemas/strict_well.schema' > 'plate/strict_acquisitions' 1`] = `
+{
+  "data": {
+    "well": {
+      "images": [
+        {
+          "acquisition": 0,
+          "path": "0",
+        },
+      ],
+      "version": "0.5-dev",
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the strict well JSON schema' - 'schemas/strict_well.schema' > 'well/strict_no_acquisitions' 1`] = `
+{
+  "data": {
+    "well": {
+      "images": [
+        {
+          "path": "0",
+        },
+      ],
+      "version": "0.5-dev",
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the well JSON schema' - 'schemas/well.schema' > 'well/duplicate_images' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "No duplicate images allowed.",
+    "path": [
+      "well",
+      "images"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the well JSON schema' - 'schemas/well.schema' > 'well/empty_images' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "well",
+      "images"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the well JSON schema' - 'schemas/well.schema' > 'well/invalid_version' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "received": "foo",
+    "code": "invalid_literal",
+    "expected": "0.5-dev",
+    "path": [
+      "well",
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.5-dev\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`'Tests for the well JSON schema' - 'schemas/well.schema' > 'well/minimal_acquisitions' 1`] = `
+{
+  "data": {
+    "well": {
+      "images": [
+        {
+          "acquisition": 1,
+          "path": "0",
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the well JSON schema' - 'schemas/well.schema' > 'well/minimal_no_acquisition' 1`] = `
+{
+  "data": {
+    "well": {
+      "images": [
+        {
+          "path": "0",
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`'Tests for the well JSON schema' - 'schemas/well.schema' > 'well/non_integer_acquisition_id' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "well",
+      "images",
+      0,
+      "acquisition"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;

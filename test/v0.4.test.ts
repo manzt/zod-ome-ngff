@@ -7,5 +7,6 @@ let cases = await gather_test_cases("0.4", schemas);
 describe.each(cases)("$description - $schema.id", ({ Schema, tests }) => {
   test.each(tests)("$formerly", ({ data, valid }) => {
     expect(Schema.safeParse(data).success).toBe(valid);
+    expect(Schema.safeParse(data)).toMatchSnapshot();
   });
 });

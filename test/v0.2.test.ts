@@ -10,6 +10,7 @@ describe("v0.2", async () => {
     async (file) => {
       let result = v02.ImageSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -18,6 +19,7 @@ describe("v0.2", async () => {
     async (file) => {
       let result = v02.ImageSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -26,6 +28,7 @@ describe("v0.2", async () => {
     async (file) => {
       let result = v02.PlateSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -34,6 +37,7 @@ describe("v0.2", async () => {
     async (file) => {
       let result = v02.PlateSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -42,6 +46,7 @@ describe("v0.2", async () => {
     async (file) => {
       let result = v02.WellSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -50,6 +55,7 @@ describe("v0.2", async () => {
     async (file) => {
       let result = v02.WellSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 });

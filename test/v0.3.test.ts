@@ -11,6 +11,7 @@ describe("v0.3", async () => {
     async (file) => {
       let result = v03.ImageSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -19,6 +20,7 @@ describe("v0.3", async () => {
     async (file) => {
       let result = v03.ImageSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -27,6 +29,7 @@ describe("v0.3", async () => {
     async (file) => {
       let result = v03.PlateSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -35,6 +38,7 @@ describe("v0.3", async () => {
     async (file) => {
       let result = v03.PlateSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -43,6 +47,7 @@ describe("v0.3", async () => {
     async (file) => {
       let result = v03.WellSchema.safeParse(await file.json());
       expect(result.success).toBe(true);
+      expect(result).toMatchSnapshot();
     },
   );
 
@@ -51,6 +56,7 @@ describe("v0.3", async () => {
     async (file) => {
       let result = v03.WellSchema.safeParse(await file.json());
       expect(result.success).toBe(false);
+      expect(result).toMatchSnapshot();
     },
   );
 });
@@ -64,10 +70,12 @@ describe("v0.3 (strict)", async () => {
   test.each(complete)("image: valid $name (strict)", async (file) => {
     let result = v03.StrictImageSchema.safeParse(await file.json());
     expect(result.success).toBe(true);
+    expect(result).toMatchSnapshot();
   });
 
   test.each(incomplete)("image: invalid $name (strict)", async (file) => {
     let result = v03.StrictImageSchema.safeParse(await file.json());
     expect(result.success).toBe(false);
+    expect(result).toMatchSnapshot();
   });
 });

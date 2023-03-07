@@ -1,0 +1,633 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`v0.3 (strict) > image: invalid 'image.json' (strict) 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "name"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_literal",
+    "expected": "0.3",
+    "path": [
+      "multiscales",
+      0,
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.3\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 (strict) > image: invalid 'missing_name.json' (strict) 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "name"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 (strict) > image: invalid 'missing_version.json' (strict) 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_literal",
+    "expected": "0.3",
+    "path": [
+      "multiscales",
+      0,
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.3\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 (strict) > image: valid 'image_metadata.json' (strict) 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+        ],
+        "name": "example",
+        "version": "0.3",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 (strict) > image: valid 'image_omero.json' (strict) 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+          {
+            "path": "1",
+          },
+          {
+            "path": "2",
+          },
+        ],
+        "name": "example",
+        "version": "0.3",
+      },
+    ],
+    "omero": {
+      "channels": [
+        {
+          "active": true,
+          "color": "0000FF",
+          "family": "linear",
+          "label": "1234",
+          "window": {
+            "end": 1765,
+            "max": 2555,
+            "min": 5,
+            "start": 0,
+          },
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > image: valid 'image.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+          {
+            "path": "1",
+          },
+          {
+            "path": "2",
+          },
+        ],
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > image: valid 'image_metadata.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+        ],
+        "name": "example",
+        "version": "0.3",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > image: valid 'image_omero.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+          {
+            "path": "1",
+          },
+          {
+            "path": "2",
+          },
+        ],
+        "name": "example",
+        "version": "0.3",
+      },
+    ],
+    "omero": {
+      "channels": [
+        {
+          "active": true,
+          "color": "0000FF",
+          "family": "linear",
+          "label": "1234",
+          "window": {
+            "end": 1765,
+            "max": 2555,
+            "min": 5,
+            "start": 0,
+          },
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > image: valid 'missing_name.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+        ],
+        "version": "0.3",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > image: valid 'missing_version.json' 1`] = `
+{
+  "data": {
+    "multiscales": [
+      {
+        "axes": [
+          "z",
+          "y",
+          "x",
+        ],
+        "datasets": [
+          {
+            "path": "path/to/0",
+          },
+        ],
+        "name": "example",
+      },
+    ],
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid",
+    "path": [
+      "multiscales",
+      0,
+      "axes",
+      2
+    ]
+  },
+  {
+    "code": "custom",
+    "message": "Last two axes must be 'yx'",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_axes_count.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 2,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 2 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  },
+  {
+    "code": "custom",
+    "message": "Last two axes must be 'yx'",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_axes_order.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "custom",
+    "message": "Last two axes must be 'yx'",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_channels_color.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "omero",
+      "channels",
+      0,
+      "color"
+    ],
+    "message": "Expected string, received number"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_channels_window.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "omero",
+      "channels",
+      0,
+      "window",
+      "end"
+    ],
+    "message": "Expected number, received string"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_path.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      1,
+      "path"
+    ],
+    "message": "Expected string, received number"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'invalid_version.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "received": "invalid",
+    "code": "invalid_literal",
+    "expected": "0.3",
+    "path": [
+      "multiscales",
+      0,
+      "version"
+    ],
+    "message": "Invalid literal value, expected \\"0.3\\""
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'missing_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'missing_datasets.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "array",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "datasets"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'missing_path.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "datasets",
+      0,
+      "path"
+    ],
+    "message": "Required"
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'no_axes.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 2,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 2 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  },
+  {
+    "code": "custom",
+    "message": "Last two axes must be 'yx'",
+    "path": [
+      "multiscales",
+      0,
+      "axes"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'no_datasets.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "multiscales",
+      0,
+      "datasets"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: invalid 'no_multiscales.json' 1`] = `
+{
+  "error": [ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "array",
+    "inclusive": true,
+    "exact": false,
+    "message": "Array must contain at least 1 element(s)",
+    "path": [
+      "multiscales"
+    ]
+  }
+]],
+  "success": false,
+}
+`;
+
+exports[`v0.3 > plate: valid 'plate.json' 1`] = `
+{
+  "data": {
+    "plate": {
+      "columns": [
+        {
+          "name": "1",
+        },
+        {
+          "name": "2",
+        },
+        {
+          "name": "3",
+        },
+      ],
+      "field_count": 1,
+      "name": "plate name",
+      "rows": [
+        {
+          "name": "A",
+        },
+        {
+          "name": "B",
+        },
+      ],
+      "version": "0.3",
+      "wells": [
+        {
+          "path": "A/3",
+        },
+        {
+          "path": "B/2",
+        },
+        {
+          "path": "A/1",
+        },
+        {
+          "path": "B/3",
+        },
+      ],
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`v0.3 > well: valid 'well.json' 1`] = `
+{
+  "data": {
+    "well": {
+      "images": [
+        {
+          "acquisition": 0,
+          "path": "0",
+        },
+        {
+          "acquisition": 3,
+          "path": "1",
+        },
+      ],
+      "version": "0.3",
+    },
+  },
+  "success": true,
+}
+`;
