@@ -29,6 +29,7 @@ const StrictAquisition = z.object({
     .describe(
       "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
     )
+    .transform((seconds) => new Date(seconds * 1000))
     .optional(),
   endtime: z
     .number()
@@ -37,6 +38,7 @@ const StrictAquisition = z.object({
     .describe(
       "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
     )
+    .transform((seconds) => new Date(seconds * 1000))
     .optional(),
 });
 
