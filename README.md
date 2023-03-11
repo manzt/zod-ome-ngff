@@ -37,30 +37,26 @@ let attrs = Attrs.parse(
   await fetch(`${url}.zattrs`).then((res) => res.json()),
 );
 
-// TypeScript now _knows_ the type of attrs (since it passed validation)
+// TypeScript now _knows_ the type of attrs
 
 attrs;
 //^? StrictImageSchema | StrictLabelSchema | StrictPlateSchema | StrictWellSchema
 
 if ("multiscales" in attrs) {
   console.log("Multiscales:", attrs.multiscales);
-                            //^? StrictImageSchema
-}
+}                           //^? StrictImageSchema
 
 if ("image-label" in attrs) {
   console.log("Label:", attrs["image-label"]);
-                      //^? StrictLabelSchema
-}
+}                     //^? StrictLabelSchema
 
 if ("well" in attrs) {
   console.log("Well:", attrs.well);
-                     //^? StrictWellSchema
-}
+}                    //^? StrictWellSchema
 
 if ("plate" in attrs) {
   console.log("Plate:", attrs.plate);
-                      //^? StrictPlateSchema
-}
+}                     //^? StrictPlateSchema
 ```
 
 ## sub-packages
