@@ -291,7 +291,12 @@ function createImageSchema<T extends z.ZodTypeAny>(Multiscale: T) {
 }
 
 export const ImageSchema = createImageSchema(
-  StrictMultiscale.partial({ name: true, version: true, type: true, metadata: true }),
+  StrictMultiscale.partial({
+    name: true,
+    version: true,
+    type: true,
+    metadata: true,
+  }),
 );
 
 export const StrictImageSchema = createImageSchema(StrictMultiscale);
