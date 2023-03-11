@@ -12,11 +12,20 @@ const StrictMultiscale = z.object({
     .refine((axes): axes is [...string[], "y", "x"] => {
       return axes[axes.length - 1] === "x" && axes[axes.length - 2] === "y";
     }, "Last two axes must be 'yx'"),
+  type: z.string(),
+  metadata: z
+    .object({
+      method: z.string().optional(),
+      version: z.string().optional(),
+    })
+    .and(z.record(z.unknown())),
 });
 
 const Multiscale = StrictMultiscale.partial({
   name: true,
   version: true,
+  metadata: true,
+  type: true,
 });
 
 function createImageSchema<T extends z.ZodTypeAny>(multiscale: T) {

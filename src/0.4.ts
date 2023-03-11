@@ -252,11 +252,20 @@ const StrictMultiscale = z.object({
   version: z.literal("0.4"),
   axes: Axes,
   coordinateTransformations: CoordinateTransformations.optional(),
+  type: z.string(),
+  metadata: z
+    .object({
+      method: z.string().optional(),
+      version: z.string().optional(),
+    })
+    .and(z.record(z.unknown())),
 });
 
 const Multiscale = StrictMultiscale.partial({
   name: true,
   version: true,
+  type: true,
+  metadata: true,
 });
 
 const Omero = z.object({

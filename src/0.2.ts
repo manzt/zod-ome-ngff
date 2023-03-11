@@ -8,6 +8,14 @@ export const ImageSchema = z
           name: z.string().optional(),
           datasets: z.array(z.object({ path: z.string() })).min(1),
           version: z.literal("0.2").optional(),
+          type: z.string().optional(),
+          metadata: z
+            .object({
+              method: z.string().optional(),
+              version: z.string().optional(),
+            })
+            .and(z.record(z.unknown()))
+            .optional(),
         }),
       )
       .min(1)
