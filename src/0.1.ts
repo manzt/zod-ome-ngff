@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+function to_date(seconds: number): Date {
+  let date = new Date(0);
+  date.setUTCSeconds(seconds);
+  return date;
+}
+
 const StrictMultiscale = z.object({
   name: z.string(),
   datasets: z.array(z.object({ path: z.string() })).min(1),
@@ -76,7 +82,12 @@ export const PlateSchema = z
             maximumfieldcount: z.number().optional(),
             name: z.string().optional(),
             description: z.string().optional(),
-            starttime: z.number().optional(),
+            starttime: z
+              .number()
+              .int()
+              .gt(0)
+              .transform(to_date)
+              .optional(),
           }),
         )
         .min(1)

@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+function to_date(seconds: number): Date {
+  let date = new Date(0);
+  date.setUTCSeconds(seconds);
+  return date;
+}
+
 export const ImageSchema = z
   .object({
     multiscales: z
@@ -68,7 +74,7 @@ export const PlateSchema = z
               .describe(
                 "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
               )
-              .transform((seconds) => new Date(seconds * 1000))
+              .transform(to_date)
               .optional(),
             endtime: z
               .number()
@@ -77,7 +83,7 @@ export const PlateSchema = z
               .describe(
                 "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
               )
-              .transform((seconds) => new Date(seconds * 1000))
+              .transform(to_date)
               .optional(),
           }),
         )

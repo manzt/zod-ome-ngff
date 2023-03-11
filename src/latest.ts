@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+function to_date(seconds: number): Date {
+  let date = new Date(0);
+  date.setUTCSeconds(seconds);
+  return date;
+}
+
 const StrictAcquisition = z.object({
   id: z
     .number()
@@ -29,7 +35,7 @@ const StrictAcquisition = z.object({
     .describe(
       "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
     )
-    .transform((seconds) => new Date(seconds * 1000))
+    .transform(to_date)
     .optional(),
   endtime: z
     .number()
@@ -38,7 +44,7 @@ const StrictAcquisition = z.object({
     .describe(
       "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
     )
-    .transform((seconds) => new Date(seconds * 1000))
+    .transform(to_date)
     .optional(),
 });
 
