@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { to_date } from "./shared.js";
 
 const StrictAcquisition = z.object({
   id: z
@@ -29,6 +30,7 @@ const StrictAcquisition = z.object({
     .describe(
       "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
     )
+    .transform(to_date)
     .optional(),
   endtime: z
     .number()
@@ -37,6 +39,7 @@ const StrictAcquisition = z.object({
     .describe(
       "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
     )
+    .transform(to_date)
     .optional(),
 });
 

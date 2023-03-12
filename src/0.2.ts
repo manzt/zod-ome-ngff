@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { to_date } from "./shared.js";
 
 export const ImageSchema = z
   .object({
@@ -68,6 +69,7 @@ export const PlateSchema = z
               .describe(
                 "The start timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
               )
+              .transform(to_date)
               .optional(),
             endtime: z
               .number()
@@ -76,6 +78,7 @@ export const PlateSchema = z
               .describe(
                 "The end timestamp of the acquisition, expressed as epoch time i.e. the number seconds since the Epoch",
               )
+              .transform(to_date)
               .optional(),
           }),
         )

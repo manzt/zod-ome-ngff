@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { to_date } from "./shared.js";
 
 const StrictMultiscale = z.object({
   name: z.string(),
@@ -76,7 +77,12 @@ export const PlateSchema = z
             maximumfieldcount: z.number().optional(),
             name: z.string().optional(),
             description: z.string().optional(),
-            starttime: z.number().optional(),
+            starttime: z
+              .number()
+              .int()
+              .gt(0)
+              .transform(to_date)
+              .optional(),
           }),
         )
         .min(1)

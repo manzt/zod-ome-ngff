@@ -659,13 +659,13 @@ exports[`v0.1 > plate: valid 'plate_acquisition.json' 1`] = `
           "id": 1,
           "maximumfieldcount": 2,
           "name": "Meas_01(2012-07-31_10-41-12)",
-          "starttime": 1343731272000,
+          "starttime": +044551-02-24T06:40:00.000Z,
         },
         {
           "id": 2,
           "maximumfieldcount": 2,
           "name": "Meas_02(201207-31_11-56-41)",
-          "starttime": 1343735801000,
+          "starttime": +044551-04-17T16:43:20.000Z,
         },
       ],
       "columns": [
