@@ -275,6 +275,13 @@ const StrictMultiscale = z.object({
     .min(1),
   axes: Axes,
   coordinateTransformations: CoordinateTransformations.optional(),
+  type: z.string(),
+  metadata: z
+    .object({
+      method: z.string().optional(),
+      version: z.string().optional(),
+    })
+    .and(z.record(z.unknown())),
 });
 
 function createImageSchema<T extends z.ZodTypeAny>(Multiscale: T) {
@@ -287,7 +294,12 @@ function createImageSchema<T extends z.ZodTypeAny>(Multiscale: T) {
 }
 
 export const ImageSchema = createImageSchema(
-  StrictMultiscale.partial({ name: true, version: true }),
+  StrictMultiscale.partial({
+    name: true,
+    version: true,
+    type: true,
+    metadata: true,
+  }),
 );
 
 export const StrictImageSchema = createImageSchema(StrictMultiscale);
