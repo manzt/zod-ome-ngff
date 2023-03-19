@@ -1,5 +1,25 @@
 # zod-ome-ngff
 
+## 0.2.0
+
+### Minor Changes
+
+- feat: parse integer datetimes (seconds) as UTC `Date` objects ([#14](https://github.com/manzt/zod-ome-ngff/pull/14))
+
+  ```typescript
+  import { StrictPlateSchema } from "zod-ome-ngff";
+
+  let { plate } = StrictPlateSchema.parse({
+    /* ... */
+  });
+
+  for (let acq of plate.acquisitions!) {
+    if (acq.starttime) acq.starttime;
+    //^? Date
+    if (acq.endtime) acq.endtime;
+  } //^? Date
+  ```
+
 ## 0.1.4
 
 ### Patch Changes
