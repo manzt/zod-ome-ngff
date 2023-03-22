@@ -17,10 +17,18 @@ exports[`v0.1 (strict) > image: valid 'image_complete.json' (strict) 1`] = `
           },
         ],
         "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
           "method": "skimage.transform.pyramid_gaussian",
           "version": "0.16.1",
         },
         "name": "example",
+        "type": "gaussian",
         "version": "0.1",
       },
     ],
@@ -56,10 +64,18 @@ exports[`v0.1 (strict) > image: valid 'image_complete_no_omero.json' (strict) 1`
           },
         ],
         "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
           "method": "skimage.transform.pyramid_gaussian",
           "version": "0.16.1",
         },
         "name": "example",
+        "type": "gaussian",
         "version": "0.1",
       },
     ],
@@ -108,10 +124,18 @@ exports[`v0.1 > image: valid 'image_complete.json' 1`] = `
           },
         ],
         "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
           "method": "skimage.transform.pyramid_gaussian",
           "version": "0.16.1",
         },
         "name": "example",
+        "type": "gaussian",
         "version": "0.1",
       },
     ],
@@ -147,10 +171,18 @@ exports[`v0.1 > image: valid 'image_complete_no_omero.json' 1`] = `
           },
         ],
         "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
           "method": "skimage.transform.pyramid_gaussian",
           "version": "0.16.1",
         },
         "name": "example",
+        "type": "gaussian",
         "version": "0.1",
       },
     ],
@@ -173,6 +205,7 @@ exports[`v0.1 > image: valid 'missing_name.json' 1`] = `
           "method": "skimage.transform.pyramid_gaussian",
           "version": "0.16.1",
         },
+        "type": "gaussian",
         "version": "0.1",
       },
     ],
@@ -219,6 +252,7 @@ exports[`v0.1 > image: valid 'missing_version.json' 1`] = `
           "version": "0.16.1",
         },
         "name": "example",
+        "type": "gaussian",
       },
     ],
     "omero": {

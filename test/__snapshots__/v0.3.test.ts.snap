@@ -23,6 +23,39 @@ exports[`v0.3 (strict) > image: invalid 'image.json' (strict) 1`] = `
       "version"
     ],
     "message": "Invalid literal value, expected \\"0.3\\""
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "type"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "metadata"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "metadata"
+    ],
+    "message": "Required"
   }
 ]],
   "success": false,
@@ -60,6 +93,39 @@ exports[`v0.3 (strict) > image: invalid 'missing_version.json' (strict) 1`] = `
       "version"
     ],
     "message": "Invalid literal value, expected \\"0.3\\""
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "type"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "metadata"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "undefined",
+    "path": [
+      "multiscales",
+      0,
+      "metadata"
+    ],
+    "message": "Required"
   }
 ]],
   "success": false,
@@ -81,7 +147,19 @@ exports[`v0.3 (strict) > image: valid 'image_metadata.json' (strict) 1`] = `
             "path": "path/to/0",
           },
         ],
+        "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
+          "method": "skimage.transform.pyramid_gaussian",
+          "version": "0.16.1",
+        },
         "name": "example",
+        "type": "gaussian",
         "version": "0.3",
       },
     ],
@@ -111,7 +189,19 @@ exports[`v0.3 (strict) > image: valid 'image_omero.json' (strict) 1`] = `
             "path": "2",
           },
         ],
+        "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
+          "method": "skimage.transform.pyramid_gaussian",
+          "version": "0.16.1",
+        },
         "name": "example",
+        "type": "gaussian",
         "version": "0.3",
       },
     ],
@@ -179,7 +269,19 @@ exports[`v0.3 > image: valid 'image_metadata.json' 1`] = `
             "path": "path/to/0",
           },
         ],
+        "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
+          "method": "skimage.transform.pyramid_gaussian",
+          "version": "0.16.1",
+        },
         "name": "example",
+        "type": "gaussian",
         "version": "0.3",
       },
     ],
@@ -209,7 +311,19 @@ exports[`v0.3 > image: valid 'image_omero.json' 1`] = `
             "path": "2",
           },
         ],
+        "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
+          "method": "skimage.transform.pyramid_gaussian",
+          "version": "0.16.1",
+        },
         "name": "example",
+        "type": "gaussian",
         "version": "0.3",
       },
     ],
@@ -249,6 +363,18 @@ exports[`v0.3 > image: valid 'missing_name.json' 1`] = `
             "path": "path/to/0",
           },
         ],
+        "metadata": {
+          "args": [
+            "true",
+            "false",
+          ],
+          "kwargs": {
+            "multichannel": true,
+          },
+          "method": "skimage.transform.pyramid_gaussian",
+          "version": "0.16.1",
+        },
+        "type": "gaussian",
         "version": "0.3",
       },
     ],

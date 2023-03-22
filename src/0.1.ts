@@ -5,17 +5,20 @@ const StrictMultiscale = z.object({
   name: z.string(),
   datasets: z.array(z.object({ path: z.string() })).min(1),
   version: z.literal("0.1"),
+  type: z.string(),
   metadata: z
     .object({
       method: z.string().optional(),
       version: z.string().optional(),
-    }),
+    })
+    .and(z.record(z.unknown())),
 });
 
 const Multiscale = StrictMultiscale.partial({
   name: true,
   version: true,
   metadata: true,
+  type: true,
 });
 
 const Omero = z.object({
