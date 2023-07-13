@@ -147,7 +147,7 @@ exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_channels_window.json'
 }
 `;
 
-exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_multiscales_transform…' 1`] = `
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_multiscales_transformations.json' 1`] = `
 {
   "error": [ZodError: [
   {
@@ -271,7 +271,7 @@ exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_path.json' 1`] = `
 }
 `;
 
-exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_transformation_type.j…' 1`] = `
+exports[`'TBD' - 'schemas/image.schema' > 'invalid/invalid_transformation_type.json' 1`] = `
 {
   "error": [ZodError: [
   {
@@ -1175,7 +1175,7 @@ exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/multiscales_examp
 }
 `;
 
-exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/multiscales_transformati…' 1`] = `
+exports[`'TBD' - 'schemas/strict_image.schema' > 'valid_strict/multiscales_transformations.json' 1`] = `
 {
   "data": {
     "multiscales": [
@@ -1474,7 +1474,7 @@ exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acq
 }
 `;
 
-exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acquisition_zero_maximumfieldco…' 1`] = `
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/acquisition_zero_maximumfieldcount' 1`] = `
 {
   "error": [ZodError: [
   {
@@ -1974,7 +1974,7 @@ exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non
 }
 `;
 
-exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non_integer_acquisition_maximum…' 1`] = `
+exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/non_integer_acquisition_maximumfieldcount' 1`] = `
 {
   "error": [ZodError: [
   {
@@ -2076,7 +2076,7 @@ exports[`'Tests for the plate JSON schema' - 'schemas/plate.schema' > 'plate/zer
 }
 `;
 
-exports[`'Tests for the strict image-label JSON…' - 'schemas/strict_label.schema' > 'image-label/no_colors' 1`] = `
+exports[`'Tests for the strict image-label JSON schema' - 'schemas/strict_label.schema' > 'image-label/no_colors' 1`] = `
 {
   "error": [ZodError: [
   {
@@ -2094,7 +2094,7 @@ exports[`'Tests for the strict image-label JSON…' - 'schemas/strict_label.sche
 }
 `;
 
-exports[`'Tests for the strict image-label JSON…' - 'schemas/strict_label.schema' > 'image-label/no_version' 1`] = `
+exports[`'Tests for the strict image-label JSON schema' - 'schemas/strict_label.schema' > 'image-label/no_version' 1`] = `
 {
   "error": [ZodError: [
   {
@@ -2111,7 +2111,7 @@ exports[`'Tests for the strict image-label JSON…' - 'schemas/strict_label.sche
 }
 `;
 
-exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/missing_acquisition_maximumfiel…' 1`] = `
+exports[`'Tests for the strict plate JSON schema' - 'schemas/strict_plate.schema' > 'plate/missing_acquisition_maximumfieldcount' 1`] = `
 {
   "error": [ZodError: [
   {
